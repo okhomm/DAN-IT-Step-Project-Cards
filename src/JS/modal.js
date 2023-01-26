@@ -15,6 +15,7 @@ class Modal {
                 `
         element.style.cssText = `background-color: #f2f2f2; border: 1px solid black; padding: 40px; text-align: center; margin: 10px 300px;`
         document.body.append(element)
+
     }
 
 }
