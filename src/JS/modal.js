@@ -8,6 +8,15 @@ class Modal {
         elementBlur.id = 'idBlur';
         elementBlur.style.cssText = 'background-color: rgba(0, 0, 0, .3); position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 999; backdrop-filter: blur(1px);'
         document.body.append(elementBlur)
+
+        elementBlur.addEventListener('click', function (event) {
+            event.target.id == 'idBlur' ? elementBlur.remove() : false
+        })
+
+        document.addEventListener('keydown', function (event) {
+            event.code == 'Escape' ? elementBlur.remove() : false
+        })
+
     }
     user() {
         this.blurEffect()
