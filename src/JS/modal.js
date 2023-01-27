@@ -13,7 +13,7 @@ class Modal {
         this.blurEffect()
         const element = document.createElement('div')
         // const elementBlur = document.createElement('div')
-        const elementBlur = document.body.getElementById('elementBlur')
+        const Blur = document.body.querySelector('#idBlur')
         element.id = 'idUser';
         // elementBlur.id = 'idBlur';
         element.innerHTML = `
@@ -44,7 +44,7 @@ class Modal {
                   `
         element.style.cssText = 'max-width: 400px; margin: 0 auto; position: relative; top: 50%; transform: translateY(-50%); background-color: white; padding: 30px; border-radius: 15px;';
         // elementBlur.style.cssText = 'background-color: rgba(0, 0, 0, .3); position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 999; backdrop-filter: blur(1px);'
-        elementBlur.append(element)
+        Blur.append(element)
         // document.body.append(elementBlur)
 
     }
