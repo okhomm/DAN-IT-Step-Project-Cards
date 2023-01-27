@@ -16,8 +16,9 @@ export class Modal {
         document.addEventListener('keydown', function (event) {
             event.code == 'Escape' ? elementBlur.remove() : false
         })
-
     }
+
+
     user() {
         this.blurEffect()
         const element = document.createElement('div')
@@ -44,13 +45,17 @@ export class Modal {
                      placeholder="enter your password">
                     </div>
                     <div class="buttons-block d-flex justify-content-center align-items-center">
-                    <button type="button" class="btn btn-secondary me-2" style="width: 100px">Закрити</button>
+                    <button type="button" class="btn btn-secondary me-2" id="button-close" style="width: 100px">Закрити</button>
                     <button type="button" class="btn btn-danger" style="width: 100px">Увійти</button>
                     </div>
                 </div>
                   `
         element.style.cssText = 'max-width: 400px; margin: 0 auto; position: relative; top: 50%; transform: translateY(-50%); background-color: white; padding: 30px; border-radius: 15px;';
         blur.append(element)
+        document.querySelector('#button-close').addEventListener('click', () => {
+            element.remove()
+            blur.remove()
+        })
     }
 
 }
