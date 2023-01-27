@@ -12,10 +12,8 @@ class Modal {
     user() {
         this.blurEffect()
         const element = document.createElement('div')
-        // const elementBlur = document.createElement('div')
-        const Blur = document.body.querySelector('#idBlur')
+        const blur = document.body.querySelector('#idBlur')
         element.id = 'idUser';
-        // elementBlur.id = 'idBlur';
         element.innerHTML = `
                 <div class="login-popup text-center container-md">
                     <label for="basic-url" class="form-label text-uppercase text-dark"><h2>Вхід</h2></label>
@@ -43,10 +41,7 @@ class Modal {
                 </div>
                   `
         element.style.cssText = 'max-width: 400px; margin: 0 auto; position: relative; top: 50%; transform: translateY(-50%); background-color: white; padding: 30px; border-radius: 15px;';
-        // elementBlur.style.cssText = 'background-color: rgba(0, 0, 0, .3); position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 999; backdrop-filter: blur(1px);'
-        Blur.append(element)
-        // document.body.append(elementBlur)
-
+        blur.append(element)
     }
 
 }
