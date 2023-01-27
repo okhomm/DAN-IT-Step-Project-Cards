@@ -2,7 +2,7 @@ const buttonIp = document.querySelector('#login-btn');
 
 buttonIp.addEventListener('click',  () => { new Modal().user() })
 
-class Modal {
+export class Modal {
     blurEffect () {
         const elementBlur = document.createElement('div')
         elementBlur.id = 'idBlur';
