@@ -29,7 +29,7 @@ export class Modal {
                     <label for="basic-url" class="form-label text-uppercase text-dark"><h2>Вхід</h2></label>
                     <div class="input-group mb-2">
                     <span class="input-group-text" id="basic-addon-one">@</span>
-                    <input type="text" class="form-control" id="basic-url-one" aria-describedby="basic-addon3"
+                    <input type="text" class="form-control-one" id="basic-url-one" aria-describedby="basic-addon3"
                     placeholder="example@mail.com">
                     </div>
                     <div class="input-group mb-3">
@@ -41,12 +41,12 @@ export class Modal {
                     <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                     </svg>
                     </span>
-                    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"
+                    <input type="text" class="form-control-two" id="basic-url-two" aria-describedby="basic-addon3"
                      placeholder="enter your password">
                     </div>
                     <div class="buttons-block d-flex justify-content-center align-items-center">
                     <button type="button" class="btn btn-secondary me-2" id="button-close" style="width: 100px">Закрити</button>
-                    <button type="button" class="btn btn-danger" style="width: 100px">Увійти</button>
+                    <button type="submit" class="btn btn-danger" id="submit-type" style="width: 100px">Увійти</button>
                     </div>
                 </div>
                   `
@@ -56,6 +56,14 @@ export class Modal {
             element.remove()
             blur.remove()
         })
+
+        const login = document.querySelector('.form-control-one')
+        const password = document.querySelector('.form-control-two')
+        document.querySelector('#submit-type').addEventListener('click', function (ev) {
+            console.log('ggg')
+
+        })
+
     }
 
 }
