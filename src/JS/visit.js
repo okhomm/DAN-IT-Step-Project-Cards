@@ -18,7 +18,7 @@ class Visit {
                 <label for="basic-url" class="form-label text-uppercase text-dark">
                     <h2>Новий візит</h2>
                 </label>
-                <form>
+                <form name="visit">
 
                     <div class="row mb-3">
                         <label for="inputDoctor" class="col-sm-2 col-form-label">Лікар</label>
@@ -102,8 +102,8 @@ class Visit {
 
 
                     <div class="buttons-block d-flex justify-content-center align-items-center">
-                        <button type="button" class="btn btn-secondary me-2" style="width: 100px">Закрити</button>
-                        <button type="button" class="btn btn-danger" style="width: 100px">Готово</button>
+                        <button id="visitClose" type="button" class="btn btn-secondary me-2" style="width: 100px">Закрити</button>
+                        <button type="submit" class="btn btn-danger" style="width: 100px">Готово</button>
                     </div>
                 </form>
             </div>
@@ -111,6 +111,11 @@ class Visit {
 
         element.style.cssText = 'max-width: 1300px; margin: 0 auto; position: relative; top: 50%; transform: translateY(-50%); background-color: white; padding: 30px; border-radius: 15px;';
         blur.append(element)
+
+        document.querySelector("#visitClose").addEventListener("click", () => blur.remove())
+
+
+        // console.log(document.forms.visit)
 
     }
 
