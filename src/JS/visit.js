@@ -51,7 +51,7 @@ class Visit {
                     <div class="row mb-3">
                         <label for="inputNotes" class="col-sm-2 col-form-label">Короткі замітки</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control" id="inputNotes" rows="3"></textarea>
+                            <textarea class="form-control" name="inputNotes" id="inputNotes" rows="3"></textarea>
                         </div>
                     </div>
 
@@ -116,11 +116,31 @@ class Visit {
 
 
         // console.log(document.forms.visit)
+        const userVisit = document.forms.visit
+
+        userVisit.addEventListener('submit', function (ev) {
+            ev.preventDefault();
+
+            console.log(userVisit.inputNotes.value)
+
+
+        })
 
     }
-
-
 }
+
+// const userVisit = document.forms.visit
+
+// console.log(createVisit)
+
+// createVisit.addEventListener('submit', function (ev) {
+//
+//     console.log(ev)
+//
+//     ev.preventDefault();
+// })
+
+
 
 // class VisitDentist extends Visit {
 //
