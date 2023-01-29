@@ -60,7 +60,7 @@ export class Modal {
         const login = document.querySelector('.form-control-one')
         const password = document.querySelector('.form-control-two')
         document.querySelector('#submit-type').addEventListener('click', function (ev) {
-            console.log('ggg')
+            console.log('sss')
 
         })
 
