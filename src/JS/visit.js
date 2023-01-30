@@ -12,7 +12,7 @@ export class Visit {
         new Modal().blurEffect()
         const element = document.createElement('div')
         const blur = document.body.querySelector('#idBlur')
-        element.id = 'idUser';
+        element.id = 'userVisit';
 
         element.innerHTML = `
             <div class="new-visit-popup text-center">
@@ -74,7 +74,7 @@ export class Visit {
             </div>
         `
 
-        element.style.cssText = 'max-width: 1300px; margin: 0 auto; position: relative; top: 50%; transform: translateY(-50%); background-color: white; padding: 30px; border-radius: 15px;';
+        element.style.cssText = 'max-width: 900px; margin: 0 auto; position: relative; top: 50%; transform: translateY(-50%); background-color: white; padding: 30px; border-radius: 15px;';
         blur.append(element)
 
         document.querySelector("#visitClose").addEventListener("click", () => blur.remove())
