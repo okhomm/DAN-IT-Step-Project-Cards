@@ -10,8 +10,6 @@ let userLogin = "goluBENGko@mail.com"
 let userPassword = "313131"
 let token = "691806b3-1577-40fb-81e4-044162f4d5b6"
 
-let gogi = []
-console.log(gogi)
 
 fetch("https://ajax.test-danit.com/api/v2/cards", {
     method: 'GET',
@@ -26,7 +24,8 @@ fetch("https://ajax.test-danit.com/api/v2/cards", {
         el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
         el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
 
-        console.log(el)
+        // console.log(el)
+
 
     }))
 
@@ -36,6 +35,8 @@ fetch("https://ajax.test-danit.com/api/v2/cards", {
 //         'Authorization': `Bearer ${token}`
 //     },
 // })
+
+
 
 
 export class Visit {
@@ -153,17 +154,17 @@ export class Visit {
     }
 
     createCard (doctor, description, name, id) {
-        const dentistCard = document.createElement('div')
+        const doctorCard = document.createElement('div')
         const element = document.body.querySelector('#visitsCard')
-        dentistCard.classList = "col"
+        doctorCard.classList = "col"
 
-        dentistCard.id = id
+        doctorCard.id = id
 
         let color = ""
 
         description === "High" ? color = "danger" : description === "Low" ? color = "primary" : color = "warning"
 
-        dentistCard.innerHTML = `
+        doctorCard.innerHTML = `
                     <div class="card border-${color} mb-3 h-100">
                         <div class="card-header bg-${color} border-${color}"></div>
                         <div class="card-body text-dark">
@@ -195,7 +196,7 @@ export class Visit {
                             </button>
                             <button type="button" class="btn btn-outline-secondary" style="width: 125px">Редагувати
                             </button>
-                            <button type="button" class="btn btn-outline-danger">
+                            <button id="buttonDelete" type="button" class="btn btn-outline-danger">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                      class="bi bi-trash3" viewBox="0 0 16 16">
                                     <path
@@ -206,7 +207,17 @@ export class Visit {
                     </div>
         `
 
-        element.append(dentistCard)
+        element.append(doctorCard)
+        // doctorCard.querySelectorAll("button"[2]).forEach(el => el.addEventListener('click',  () => {
+        //     console.log("buttonDelete")}))
+        // console.log(doctorCard.querySelectorAll("button > #buttonDelete"));
+
+
+    }
+    deleteCard () {
+        const buttonDelete = document.querySelector('#buttonDelete');
+        buttonDelete.addEventListener('click',  () => {
+            console.log("buttonDelete")})
     }
 
 
@@ -247,6 +258,17 @@ export class VisitDentist extends Visit {
         const name = this.name
         const id = this.id
         new Visit().createCard(doctor, description, name, id)
+
+        // const obj = {
+        //     doctor: this.doctor,
+        //     name: this.name,
+        //     purpose: this.purpose,
+        //     notes: this.notes,
+        //     description: this.description,
+        //     date: this.date,
+        //     id: this.id
+        // }
+        // console.log(id)
     }
     dentistCard () {
         fetch("https://ajax.test-danit.com/api/v2/cards", {
@@ -261,7 +283,8 @@ export class VisitDentist extends Visit {
                 purpose: inputPurpose.value,
                 notes: inputNotes.value,
                 description: inputUrgency.value,
-                date: inputDate.value
+                date: inputDate.value,
+                status: "open"
             })
         })
             .then(response => response.json())
@@ -334,7 +357,8 @@ export class VisitCardiologist extends Visit {
                 pressure: inputPressure.value,
                 masses: inputMasses.value,
                 diseases: inputDiseases.value,
-                age: inputAge.value
+                age: inputAge.value,
+                status: "open"
             })
         })
             .then(response => response.json())
@@ -384,7 +408,8 @@ export class VisitTherapist extends Visit {
                 purpose: inputPurpose.value,
                 notes: inputNotes.value,
                 description: inputUrgency.value,
-                age: inputAge.value
+                age: inputAge.value,
+                status: "open"
             })
         })
             .then(response => response.json())
