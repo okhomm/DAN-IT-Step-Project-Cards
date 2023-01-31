@@ -24,17 +24,19 @@ fetch("https://ajax.test-danit.com/api/v2/cards", {
         el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
         el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
 
-        // console.log(el)
+        console.log(el)
 
 
     }))
 
-// fetch("https://ajax.test-danit.com/api/v2/cards/144505", {
+// fetch("https://ajax.test-danit.com/api/v2/cards/144518", {
 //     method: 'DELETE',
 //     headers: {
 //         'Authorization': `Bearer ${token}`
 //     },
 // })
+//     .then(response => response.text())
+//     .then(data => data === "" ? console.log("gogi") : false)
 
 
 
@@ -192,9 +194,9 @@ export class Visit {
                             </div>
                         </div>
                         <div class="card-footer bg-transparent d-flex justify-content-around align-items-center">
-                            <button type="button" class="btn btn-outline-secondary" style="width: 125px">Переглянути
+                            <button id="" type="button" class="btn btn-outline-secondary" style="width: 125px">Переглянути
                             </button>
-                            <button type="button" class="btn btn-outline-secondary" style="width: 125px">Редагувати
+                            <button id="buttonEdit" type="button" class="btn btn-outline-secondary" style="width: 125px">Редагувати
                             </button>
                             <button id="buttonDelete" type="button" class="btn btn-outline-danger">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -208,18 +210,22 @@ export class Visit {
         `
 
         element.append(doctorCard)
-        // doctorCard.querySelectorAll("button"[2]).forEach(el => el.addEventListener('click',  () => {
-        //     console.log("buttonDelete")}))
-        // console.log(doctorCard.querySelectorAll("button > #buttonDelete"));
+
+
+
+        doctorCard.querySelector("#buttonDelete").addEventListener('click',  async () => {
+            await fetch(`https://ajax.test-danit.com/api/v2/cards/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+            })
+                .then(response => response.text())
+                .then(data => data === "" ? doctorCard.remove() : false)
+        })
 
 
     }
-    deleteCard () {
-        const buttonDelete = document.querySelector('#buttonDelete');
-        buttonDelete.addEventListener('click',  () => {
-            console.log("buttonDelete")})
-    }
-
 
 }
 
@@ -307,21 +313,21 @@ export class VisitCardiologist extends Visit {
            <div class="row mb-3">
                 <label for="inputPressure" class="col-sm-2 col-form-label">Звичайний тиск</label>
                     <div class="col-sm-10">
-                       <input type="password" class="form-control" name="inputPressure" id="inputPressure" placeholder="Введіть свій тиск">
+                       <input type="text" class="form-control" name="inputPressure" id="inputPressure" placeholder="Введіть свій тиск">
                     </div>
            </div>
 
            <div class="row mb-3">
                 <label for="inputMasses" class="col-sm-2 col-form-label">Індекс маси тіла</label>
                         <div class="col-sm-10">
-                            <input type="password" class="form-control" name="inputMasses" id="inputMasses" placeholder="Введіть свій ІМТ">
+                            <input type="text" class="form-control" name="inputMasses" id="inputMasses" placeholder="Введіть свій ІМТ">
                         </div>
            </div>
 
            <div class="row mb-3">
                 <label for="inputDiseases" class="col-sm-2 col-form-label">Захворювання</label>
                         <div class="col-sm-10">
-                            <input type="password" class="form-control" name="inputDiseases" id="inputDiseases" placeholder="Введіть перенесені захворювання серцево-судинної системи">
+                            <input type="text" class="form-control" name="inputDiseases" id="inputDiseases" placeholder="Введіть перенесені захворювання серцево-судинної системи">
                         </div>
            </div>
            <div class="row mb-3">
