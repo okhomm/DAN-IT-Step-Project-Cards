@@ -39,16 +39,16 @@
                     <button class="btn btn btn-danger me-1" type="submit" disabled>Open</button>
                     <button class="btn btn btn-outline-danger me-5" type="submit">Done</button>
                     <span class="navbar-brand">Терміновість</span>
-                    <button class="btn btn btn-danger me-1" type="submit" disabled>High</button>
-                    <button class="btn btn btn-outline-danger me-1" type="submit">Normal</button>
-                    <button class="btn btn btn-outline-danger" type="submit">Low</button>
+                    <button id="filterHigh" class="btn btn btn-danger me-1" type="submit" disabled>High</button>
+                    <button id="filterNormal" class="btn btn btn-outline-danger me-1" type="submit">Normal</button>
+                    <button id="filterLow" class="btn btn btn-outline-danger" type="submit">Low</button>
                 </form>
             </div>
         </nav>
 
-        <div class="cards-dashboard bg-light rounded mt-3 h-100 w-100">
-            <div class="empty d-flex justify-content-center align-items-center">
-                <p class="empty-text pb-5 pt-5 display-6 text-secondary">Немає візитів</p>
+        <div id="dashboardCards" class="cards-dashboard bg-light rounded mt-3 h-100 w-100">
+            <div id="visitsCard" class="empty d-flex justify-content-center align-items-center">
+                <p id="dashboardText" class="empty-text pb-5 pt-5 display-6 text-secondary">Немає візитів</p>
             </div>
         </div>
 
@@ -60,5 +60,6 @@
         crossorigin="anonymous"></script>
 <script type="module" src="src/JS/modal.js"></script>
 <script type="module" src="src/JS/visit.js"></script>
+<script type="module" src="src/JS/filter.js"></script>
 </body>
 </html>
