@@ -240,6 +240,7 @@ export class Visit {
         // doctorCard.querySelector("#buttonEdit")
 
 
+
     }
     createView (obj) {
         new Modal().blurEffect()
