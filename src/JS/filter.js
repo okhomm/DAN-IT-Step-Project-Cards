@@ -6,8 +6,13 @@ let token = "691806b3-1577-40fb-81e4-044162f4d5b6"
 
 const lowButton = document.querySelector('#filterLow');
 
+
+
 lowButton.addEventListener('click',  (ev) => {
     ev.preventDefault();
+
+    document.body.querySelectorAll('.col').forEach(el => el.remove())
+
 
     fetch("https://ajax.test-danit.com/api/v2/cards", {
         method: 'GET',
@@ -18,13 +23,10 @@ lowButton.addEventListener('click',  (ev) => {
         .then(response => response.json())
         .then(data => data.forEach(el => {
 
-            document.body.querySelector('#visitsCard').childNodes.forEach(el => el.remove());
-
-            el.description === "Low" && el.doctor === "Стоматолог" ? new VisitDentist().render.call(el) : false
-            el.description === "Low" && el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
-            el.description === "Low" && el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
+            el.doctor === "Стоматолог" && el.description === "Low" ? new VisitDentist().render.call(el) : false
+            el.doctor === "Кардіолог" && el.description === "Low" ? new VisitCardiologist().render.call(el) : false
+            el.doctor === "Терапевт" && el.description === "Low" ? new VisitTherapist().render.call(el) : false
 
         }))
-
 })
 

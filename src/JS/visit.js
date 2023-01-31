@@ -30,7 +30,7 @@ fetch("https://ajax.test-danit.com/api/v2/cards", {
 
     }))
 
-// fetch("https://ajax.test-danit.com/api/v2/cards/144502", {
+// fetch("https://ajax.test-danit.com/api/v2/cards/144505", {
 //     method: 'DELETE',
 //     headers: {
 //         'Authorization': `Bearer ${token}`
@@ -152,10 +152,12 @@ export class Visit {
         dashboardText ? dashboardText.remove() : false
     }
 
-    createCard (doctor, description, name) {
+    createCard (doctor, description, name, id) {
         const dentistCard = document.createElement('div')
         const element = document.body.querySelector('#visitsCard')
         dentistCard.classList = "col"
+
+        dentistCard.id = id
 
         let color = ""
 
@@ -243,7 +245,8 @@ export class VisitDentist extends Visit {
         const doctor = this.doctor
         const description = this.description
         const name = this.name
-        new Visit().createCard(doctor, description, name)
+        const id = this.id
+        new Visit().createCard(doctor, description, name, id)
     }
     dentistCard () {
         fetch("https://ajax.test-danit.com/api/v2/cards", {
@@ -312,7 +315,8 @@ export class VisitCardiologist extends Visit {
         const doctor = this.doctor
         const description = this.description
         const name = this.name
-        new Visit().createCard(doctor, description, name)
+        const id = this.id
+        new Visit().createCard(doctor, description, name, id)
     }
     cardiologistCard () {
         fetch("https://ajax.test-danit.com/api/v2/cards", {
@@ -363,7 +367,8 @@ export class VisitTherapist extends Visit {
         const doctor = this.doctor
         const description = this.description
         const name = this.name
-        new Visit().createCard(doctor, description, name)
+        const id = this.id
+        new Visit().createCard(doctor, description, name, id)
     }
 
     therapistCard () {
