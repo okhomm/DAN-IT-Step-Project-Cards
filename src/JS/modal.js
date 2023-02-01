@@ -120,6 +120,7 @@ export class Modal {
             if (localStorage.getItem('token')) {
                 element.remove()
                 blur.remove()
+                document.querySelector('#login-btn').remove()
             }
             if (validation(this) == true) {
            }
