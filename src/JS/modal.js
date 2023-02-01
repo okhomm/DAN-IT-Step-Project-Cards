@@ -1,3 +1,5 @@
+let token = ''
+
 const buttonIp = document.querySelector('#login-btn');
 
 buttonIp.addEventListener('click',  () => { new Modal().user() })
@@ -31,7 +33,7 @@ export class Modal {
                <form action="" class="form" id="add-from">
                <div class="input-group mb-2">
                <span class="input-group-text"  id="basic-addon-one">@</span>
-               <input data-required="true" data-max-lenght="50" data-min-lenght="2"type="text" class="form-control" id="basic-url-one" aria-describedby="basic-addon3"
+               <input name="email" data-required="true" data-max-lenght="50" data-min-lenght="2"type="text" class="form-control" id="basic-url-one" aria-describedby="basic-addon3"
                placeholder="example@mail.com">
                </div>
                <div class="input-group mb-3">
@@ -43,7 +45,7 @@ export class Modal {
                <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                </svg>
                </span>
-               <input data-required="true" data-max-lenght="50" data-min-lenght="2" type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"
+               <input name="password" data-required="true" data-max-lenght="50" data-min-lenght="2" type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"
                placeholder="enter your password">
                </div>
                <div class="buttons-block d-flex justify-content-center align-items-center">
@@ -116,24 +118,24 @@ export class Modal {
         document.querySelector('.form').addEventListener('submit', function (event) {
             event.preventDefault()
             if (localStorage.getItem('token')) {
-                console.log('logined')
+                element.remove()
+                blur.remove()
             }
             if (validation(this) == true) {
-               alert('ok')
            }
             async function getToken() {
-                let userLogin = 'nikitafive999@gmail.com'
-                let userPassword = 'GHh12OL'
-                let user = fetch("https://ajax.test-danit.com/api/v2/cards/login", {
+                let userLogin = document.querySelector('input[name="email"]').value;
+                let userPassword = document.querySelector('input[name="password"]').value;
+                fetch("https://ajax.test-danit.com/api/v2/cards/login", {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({ email: userLogin, password: userPassword })
                 })
                     .then(response => response.text())
-                    .then(token => {
-                        console.log(token)
+                    .then(data => {
+                        token = data
                         localStorage.setItem('token', token)
                     })
             }
