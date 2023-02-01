@@ -35,9 +35,12 @@
                                aria-label="Recipient's username" aria-describedby="button-addon2">
                         <button class="btn btn-danger" type="button" id="button-addon2">Знайти</button>
                     </div>
-                    <span class="navbar-brand">Статус</span>
-                    <button class="btn btn btn-danger me-1" type="submit" disabled>Open</button>
-                    <button class="btn btn btn-outline-danger me-5" type="submit">Done</button>
+                    <div id="filterStatusButtons" class="d-flex">
+                        <span class="navbar-brand">Статус</span>
+                        <button id="filterOpenBtn" class="btn btn-outline-danger me-1" type="submit">Open</button>
+                        <button id="filterDoneBtn" class="btn btn-outline-danger me-5" type="submit">Done</button>
+                    </div>
+
                     <span class="navbar-brand">Терміновість</span>
                     <button id="filterHigh" class="btn btn btn-danger me-1" type="submit" disabled>High</button>
                     <button id="filterNormal" class="btn btn btn-outline-danger me-1" type="submit">Normal</button>

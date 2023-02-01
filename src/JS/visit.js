@@ -6,9 +6,9 @@ const buttonVisit = document.querySelector('#add-visit-btn');
 
 buttonVisit.addEventListener('click',  () => {  new Visit().createVisit() })
 
-let userLogin = "goluBENGko@mail.com"
-let userPassword = "313131"
-let token = "691806b3-1577-40fb-81e4-044162f4d5b6"
+let userLogin = "legmann@gmail.com"
+let userPassword = "qwerty12345678"
+let token = "ea883a2a-cfb9-4881-8548-380bd89f98a1"
 
 
 fetch("https://ajax.test-danit.com/api/v2/cards", {
@@ -24,7 +24,7 @@ fetch("https://ajax.test-danit.com/api/v2/cards", {
         el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
         el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
 
-        console.log(el)
+        // console.log(el)
 
 
     }))
