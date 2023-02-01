@@ -6,7 +6,7 @@ let token = "691806b3-1577-40fb-81e4-044162f4d5b6"
 
 const lowButton = document.querySelector('#filterLow');
 
-
+const getAllCards = () => {}
 
 lowButton.addEventListener('click',  (ev) => {
     ev.preventDefault();
