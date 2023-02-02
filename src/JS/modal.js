@@ -1,6 +1,5 @@
 import {Visit} from "./visit.js";
 
-let token = ''
 
 const buttonIp = document.querySelector('#login-btn');
 
@@ -61,7 +60,6 @@ export class Modal {
         blur.append(element)
 
         document.querySelector('#button-close').addEventListener('click', () => {
-            element.remove()
             blur.remove()
         })
 
@@ -120,12 +118,11 @@ export class Modal {
         document.querySelector('.form').addEventListener('submit', function (event) {
             event.preventDefault()
             if (localStorage.getItem('token')) {
-                element.remove()
                 blur.remove()
-                document.querySelector('#login-btn').remove()
             }
             if (validation(this) == true) {
-           }
+
+
             async function getToken() {
                 let userLogin = document.querySelector('input[name="email"]').value;
                 let userPassword = document.querySelector('input[name="password"]').value;
@@ -138,11 +135,20 @@ export class Modal {
                 })
                     .then(response => response.text())
                     .then(data => {
-                        token = data
-                        localStorage.setItem('token', token)
+                        if (data === "Incorrect username or password") {
+                            console.log("Неверные данные")
+
+                        } else {
+                            localStorage.setItem('token', data)
+                            document.querySelector('#login-btn').remove()
+                            new Modal().authorization ()
+                            blur.remove()
+                        }
                     })
             }
-            new Modal(getToken())
+                new Modal(getToken())
+            }
+
         })
 
     }
@@ -158,8 +164,18 @@ export class Modal {
         header.append(element)
 
         element.querySelector('#add-visit-btn').addEventListener('click',  () => {  new Visit().createVisit() })
-    }
+        element.querySelector('#logout-btn').addEventListener('click',  () => {
 
+            localStorage.clear()
+            element.remove()
+            element.innerHTML = `
+            <button id="login-btn" class="btn btn-danger" type="button">Увійти</button>
+        `
+            header.append(element)
+
+            document.body.querySelector('#login-btn').addEventListener('click',  () => { new Modal().user() })
+        })
+    }
 }
 
 
