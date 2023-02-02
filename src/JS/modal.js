@@ -7,6 +7,7 @@ const buttonIp = document.querySelector('#login-btn');
 buttonIp.addEventListener('click',  () => { new Modal().user() })
 
 export class Modal {
+
     blurEffect () {
         const elementBlur = document.createElement('div')
         elementBlur.id = 'idBlur';
@@ -21,7 +22,6 @@ export class Modal {
             event.code == 'Escape' ? elementBlur.remove() : false
         })
     }
-
 
     user() {
         this.blurEffect()
@@ -61,7 +61,6 @@ export class Modal {
         blur.append(element)
 
         document.querySelector('#button-close').addEventListener('click', () => {
-            element.remove()
             blur.remove()
         })
 
@@ -120,7 +119,6 @@ export class Modal {
         document.querySelector('.form').addEventListener('submit', function (event) {
             event.preventDefault()
             if (localStorage.getItem('token')) {
-                element.remove()
                 blur.remove()
                 document.querySelector('#login-btn').remove()
             }
@@ -129,6 +127,7 @@ export class Modal {
             async function getToken() {
                 let userLogin = document.querySelector('input[name="email"]').value;
                 let userPassword = document.querySelector('input[name="password"]').value;
+
                 fetch("https://ajax.test-danit.com/api/v2/cards/login", {
                     method: 'POST',
                     headers: {
@@ -146,21 +145,28 @@ export class Modal {
         })
 
     }
-    authorization () {
-        const element = document.createElement('div')
-        const header = document.body.querySelector('#header')
-        element.classList = "header-right-block d-flex align-items-center"
 
-        element.innerHTML = `
+    authorization () {
+    const elementButtons = document.createElement('div')
+    const header = document.body.querySelector('#header')
+    elementButtons.classList = "header-right-block d-flex align-items-center"
+
+    elementButtons.innerHTML = `
             <button id="add-visit-btn" class="btn btn-outline-danger me-2" type="button">Новий візит</button>
             <button id="logout-btn" class="btn btn-danger" type="button">Вийти</button>
         `
-        header.append(element)
+    header.append(elementButtons)
+    document.querySelector('#logout-btn').addEventListener('click', () => {
 
-        element.querySelector('#add-visit-btn').addEventListener('click',  () => {  new Visit().createVisit() })
-    }
+
+    })
+    elementButtons.querySelector('#add-visit-btn').addEventListener('click',  () => {  new Visit().createVisit() })
+}
 
 }
+
+
+
 
 
 
