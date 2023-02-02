@@ -1,3 +1,5 @@
+import {Visit} from "./visit.js";
+
 let token = ''
 
 const buttonIp = document.querySelector('#login-btn');
@@ -143,6 +145,19 @@ export class Modal {
             new Modal(getToken())
         })
 
+    }
+    authorization () {
+        const element = document.createElement('div')
+        const header = document.body.querySelector('#header')
+        element.classList = "header-right-block d-flex align-items-center"
+
+        element.innerHTML = `
+            <button id="add-visit-btn" class="btn btn-outline-danger me-2" type="button">Новий візит</button>
+            <button id="login-btn" class="btn btn-danger" type="button">Вийти</button>
+        `
+        header.append(element)
+
+        element.querySelector('#add-visit-btn').addEventListener('click',  () => {  new Visit().createVisit() })
     }
 
 }
