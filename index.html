@@ -13,13 +13,17 @@
 <body>
 <div class="wrapper container-md">
 
-  <header id="header" class="header d-flex justify-content-between mt-3">
+    <header id="header" class="header d-flex justify-content-between mt-3">
         <div class="header-left-block d-flex align-items-center">
-            <div class="logo me-5"><img src="./src/img/logo.png" alt="" width="300px"></div>
+            <div class="logo me-5">
+                <a href="./">
+                    <img src="./src/img/logo.png" alt="" width="300px">
+                </a>
+            </div>
             <span class="greetings">Вітаємо, зайдіть в систему щоб побачити візити!</span>
         </div>
         <div id="headerButton" class="header-right-block d-flex align-items-center">
-<!--            <button id="add-visit-btn" class="btn btn-outline-danger me-2" type="button">Новий візит</button>-->
+            <!--            <button id="add-visit-btn" class="btn btn-outline-danger me-2" type="button">Новий візит</button>-->
             <button id="login-btn" class="btn btn-danger" type="button">Увійти</button>
         </div>
     </header>
@@ -27,7 +31,7 @@
     <main class="main mt-3">
         <div class="filter-block"></div>
 
-      <nav class="navbar bg-light rounded">
+        <nav class="navbar bg-light rounded">
             <div class="container-fluid d-flex justify-content-around align-items-center">
                 <form class="d-flex align-items-center" role="search">
                     <div class="input-group me-5">
@@ -40,11 +44,12 @@
                         <button id="filterOpenBtn" class="btn btn-outline-danger me-1" type="submit">Open</button>
                         <button id="filterDoneBtn" class="btn btn-outline-danger me-5" type="submit">Done</button>
                     </div>
-
-                    <span class="navbar-brand">Терміновість</span>
-                    <button id="filterHigh" class="btn btn btn-danger me-1" type="submit" disabled>High</button>
-                    <button id="filterNormal" class="btn btn btn-outline-danger me-1" type="submit">Normal</button>
-                    <button id="filterLow" class="btn btn btn-outline-danger" type="submit">Low</button>
+                    <div id="filterUrgencyButtons" class="d-flex">
+                        <span class="navbar-brand">Терміновість</span>
+                        <button id="filterHigh" class="btn btn btn-outline-danger me-1" type="submit">High</button>
+                        <button id="filterNormal" class="btn btn btn-outline-danger me-1" type="submit">Normal</button>
+                        <button id="filterLow" class="btn btn btn-outline-danger" type="submit">Low</button>
+                    </div>
                 </form>
             </div>
         </nav>
