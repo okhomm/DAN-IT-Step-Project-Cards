@@ -153,7 +153,7 @@ export class Modal {
 
         element.innerHTML = `
             <button id="add-visit-btn" class="btn btn-outline-danger me-2" type="button">Новий візит</button>
-            <button id="login-btn" class="btn btn-danger" type="button">Вийти</button>
+            <button id="logout-btn" class="btn btn-danger" type="button">Вийти</button>
         `
         header.append(element)
 
