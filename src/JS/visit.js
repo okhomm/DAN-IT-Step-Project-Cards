@@ -24,7 +24,7 @@ fetch("https://ajax.test-danit.com/api/v2/cards", {
         el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
         el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
 
-        console.log(el)
+        // console.log(el)
 
 
     }))
@@ -52,7 +52,7 @@ export class Visit {
         element.innerHTML = `
             <div class="new-visit-popup text-center">
                 <label for="basic-url" class="form-label text-uppercase text-dark">
-                    <h2>Новий візит</h2>
+                    <h2 id="newVisit">Новий візит</h2>
                 </label>  
                 <form name="visit">
 
@@ -114,7 +114,6 @@ export class Visit {
 
         document.querySelector("#visitClose").addEventListener("click", () => blur.remove())
 
-
         const userVisit = document.forms.visit
 
         userVisit.inputDoctor.addEventListener("change", (ev) => {
@@ -132,13 +131,33 @@ export class Visit {
 
             new Visit().clear()
 
-            userVisit.inputDoctor.value === "Dentist" ? new VisitDentist().dentistCard() : false
-            userVisit.inputDoctor.value === "Cardiologist" ? new VisitCardiologist().cardiologistCard() : false
-            userVisit.inputDoctor.value === "Therapist" ? new VisitTherapist().therapistCard() : false
+            const warning = document.createElement('div')
+            const firstItem = document.body.querySelector('#newVisit')
+            warning.id = "warning"
+
+            warning.innerHTML = `
+          <div>
+             <h4 style="color: red">Усі поля мають бути заповнені</h4>
+          </div>
+          `
 
 
+            let fields
+            document.forms.visit.querySelectorAll("input").forEach(el => el.value === "" ? fields = false : fields = true)
 
-            // blur.remove()
+            document.body.querySelector("#warning") ? document.body.querySelector("#warning").remove() : false
+
+            if (inputDoctor.selectedIndex === 0 ||
+                inputUrgency.selectedIndex === 0 ||
+                inputNotes.value === "" || fields === false) {
+
+                firstItem.after(warning)
+            } else {
+                userVisit.inputDoctor.value === "Dentist" ? new VisitDentist().dentistCard() : false
+                userVisit.inputDoctor.value === "Cardiologist" ? new VisitCardiologist().cardiologistCard() : false
+                userVisit.inputDoctor.value === "Therapist" ? new VisitTherapist().therapistCard() : false
+                blur.remove()
+            }
         })
 
 
@@ -237,7 +256,16 @@ export class Visit {
         
 
 
-        // doctorCard.querySelector("#buttonEdit")
+        doctorCard.querySelector("#buttonEdit").addEventListener('click',  async () => {
+            await fetch(`https://ajax.test-danit.com/api/v2/cards/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+            })
+                .then(response => response.json())
+                .then(data => new Visit().createEdit.call(data))
+        })
 
 
 
@@ -309,6 +337,261 @@ export class Visit {
         element.style.cssText = 'max-width: 600px; margin: 0 auto; position: relative; top: 50%; transform: translateY(-50%); background-color: white; padding: 30px; border-radius: 15px;';
         blur.append(element)
     }
+
+
+   async createEdit (obj) {
+        new Modal().blurEffect()
+        const element = document.createElement('div')
+        const blur = document.body.querySelector('#idBlur')
+
+
+        element.innerHTML = `
+            <div class="new-visit-popup text-center">
+                <label for="basic-url" class="form-label text-uppercase text-dark">
+                    <h2>Редагувати візит</h2>
+                </label>  
+                <form name="edit">
+
+                    <div class="row mb-3">
+                        <label for="inputDoctor" class="col-sm-2 col-form-label">Лікар</label>
+                        <div class="col-sm-10">
+                            <select class="form-select" name="inputDoctor" id="inputDoctor" aria-label="Default select example">
+                                <option selected>Оберіть лікаря</option>
+                                <option value="Cardiologist">Кардіолог</option>
+                                <option value="Dentist">Стоматолог</option>
+                                <option value="Therapist">Терапевт</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="inputName" class="col-sm-2 col-form-label">ПІБ</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="inputName" id="inputName" placeholder="Прізвище Ім'я По батькові" value="${this.name}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="inputPurpose" class="col-sm-2 col-form-label">Ціль візита</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="inputPurpose" id="inputPurpose" placeholder="Введіть ціль свого візиту" value="${this.purpose}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="inputNotes" class="col-sm-2 col-form-label">Короткі замітки</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" name="inputNotes" id="inputNotes" rows="3"">${this.notes}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3" id="lastElem">
+                        <label for="inputUrgency" class="col-sm-2 col-form-label">Терміновість візита</label>
+                        <div class="col-sm-10">
+                            <select class="form-select" name="inputUrgency" id="inputUrgency" aria-label="Default select example">
+                                <option selected>Оберіть терміновість</option>
+                                <option value="Low">Звичайна</option>
+                                <option value="Normal">Пріоритетна</option>
+                                <option value="High">Невідкладна</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="buttons-block d-flex justify-content-center align-items-center">
+                     <button id="buttonDel" type="button" class="btn btn-secondary me-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-trash3" viewBox="0 0 16 16">
+                                <path
+                                    d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                            </svg>
+                        </button>
+                        <button id="visitClose" type="button" class="btn btn-secondary me-2" style="width: 100px">Закрити</button>
+                        <button id="visitReady" type="submit" class="btn btn-danger" style="width: 100px">Готово</button>
+                    </div>
+                </form>
+            </div>
+        `
+
+        element.style.cssText = 'max-width: 900px; margin: 0 auto; position: relative; top: 50%; transform: translateY(-50%); background-color: white; padding: 30px; border-radius: 15px;';
+        blur.append(element)
+
+
+        document.querySelector("#visitClose").addEventListener("click", () => blur.remove())
+       document.querySelector("#buttonDel").addEventListener('click',  async () => {
+           await fetch(`https://ajax.test-danit.com/api/v2/cards/${this.id}`, {
+               method: 'DELETE',
+               headers: {
+                   'Authorization': `Bearer ${token}`
+               },
+           })
+               .then(response => response.text())
+               .then(data => {
+                   if (data === "") {
+                       document.getElementById(`${this.id}`).remove()
+                       blur.remove()
+                   }
+               })
+       })
+
+       const userEdit = document.forms.edit
+
+
+
+        this.doctor === "Терапевт" ? userEdit.inputDoctor.selectedIndex = 3 : false
+        this.doctor === "Стоматолог" ? userEdit.inputDoctor.selectedIndex = 2 : false
+        this.doctor === "Кардіолог" ? userEdit.inputDoctor.selectedIndex = 1 : false
+
+
+        this.description === "Low" ? userEdit.inputUrgency.selectedIndex = 1 : false
+        this.description === "Normal" ? userEdit.inputUrgency.selectedIndex = 2 : false
+        this.description === "High" ? userEdit.inputUrgency.selectedIndex = 3 : false
+
+
+       const lastElem = document.body.querySelector('#lastElem')
+
+       const dentistElement = document.createElement('div')
+       dentistElement.innerHTML = `
+          <div class="row mb-3">
+             <label for="inputDate" class="col-sm-2 col-form-label">Дата останнього відвідування</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" name="inputDate" id="inputDate" placeholder="Введіть дату відвідування" value="${this.date}">
+              </div>
+          </div>
+          `
+       this.doctor === "Стоматолог" ? lastElem.after(dentistElement) : false
+
+       const cardiologistElement = document.createElement('div')
+       cardiologistElement.innerHTML = `
+           <div class="row mb-3">
+                <label for="inputPressure" class="col-sm-2 col-form-label">Звичайний тиск</label>
+                    <div class="col-sm-10">
+                       <input type="text" class="form-control" name="inputPressure" id="inputPressure" placeholder="Введіть свій тиск" value="${this.pressure}">
+                    </div>
+           </div>
+
+           <div class="row mb-3">
+                <label for="inputMasses" class="col-sm-2 col-form-label">Індекс маси тіла</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="inputMasses" id="inputMasses" placeholder="Введіть свій ІМТ" value="${this.masses}">
+                        </div>
+           </div>
+
+           <div class="row mb-3">
+                <label for="inputDiseases" class="col-sm-2 col-form-label">Захворювання</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="inputDiseases" id="inputDiseases" placeholder="Введіть перенесені захворювання серцево-судинної системи" value="${this.diseases}">
+                        </div>
+           </div>
+           <div class="row mb-3">
+                <label for="inputAge" class="col-sm-2 col-form-label">Вік</label>
+                         <div class="col-sm-10">
+                            <input type="text" class="form-control" name="inputAge" id="inputAge" placeholder="Введіть свій вік" value="${this.age}">
+                         </div>
+          </div>
+          `
+       this.doctor === "Кардіолог" ? lastElem.after(cardiologistElement) : false
+
+       const therapistElement = document.createElement('div')
+       therapistElement.innerHTML = `
+          <div class="row mb-3">
+             <label for="inputAge" class="col-sm-2 col-form-label">Вік</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" name="inputAge" id="inputAge" placeholder="Введіть свій вік" value="${this.age}">
+              </div>
+          </div>
+          `
+       this.doctor === "Терапевт" ? lastElem.after(therapistElement) : false
+
+       userEdit.inputDoctor.addEventListener("change", (ev) => {
+           ev.target.value === "Dentist" ? new VisitDentist().dentist() : document.querySelector('#dentistItem') ? document.querySelector('#dentistItem').remove() : false
+           ev.target.value === "Cardiologist" ? new VisitCardiologist().cardiologist() : document.querySelector('#cardiologistItem') ? document.querySelector('#cardiologistItem').remove() : false
+           ev.target.value === "Therapist" ? new VisitTherapist().therapist() : document.querySelector('#therapistItem') ? document.querySelector('#therapistItem').remove() : false
+       })
+
+
+
+       document.querySelector("#visitReady").addEventListener("click", (ev) => {
+
+           ev.preventDefault();
+
+           let userValue = {}
+
+        if (userEdit.inputDoctor.value === "Dentist") {
+            userValue = {
+                   doctor: inputDoctor.options[inputDoctor.selectedIndex].text,
+                   name: inputName.value,
+                   purpose: inputPurpose.value,
+                   notes: inputNotes.value,
+                   description: inputUrgency.value,
+                   date: inputDate.value,
+                   status: "open"
+               }
+           } else if (userEdit.inputDoctor.value === "Cardiologist") {
+            userValue = {
+                   doctor: inputDoctor.options[inputDoctor.selectedIndex].text,
+                   name: inputName.value,
+                   purpose: inputPurpose.value,
+                   notes: inputNotes.value,
+                   description: inputUrgency.value,
+                   pressure: inputPressure.value,
+                   masses: inputMasses.value,
+                   diseases: inputDiseases.value,
+                   age: inputAge.value,
+                   status: "open"
+               }
+           } else if (userEdit.inputDoctor.value === "Therapist") {
+            userValue = {
+                   doctor: inputDoctor.options[inputDoctor.selectedIndex].text,
+                   name: inputName.value,
+                   purpose: inputPurpose.value,
+                   notes: inputNotes.value,
+                   description: inputUrgency.value,
+                   age: inputAge.value,
+                   status: "open"
+               }
+           }
+
+           const warning = document.createElement('div')
+           const firstItem = document.body.querySelector('#newVisit')
+           warning.id = "warning"
+
+           warning.innerHTML = `
+          <div>
+             <h4 style="color: red">Усі поля мають бути заповнені</h4>
+          </div>
+          `
+
+
+           let fields
+           userEdit.querySelectorAll("input").forEach(el => el.value === "" ? fields = false : fields = true)
+
+
+
+           document.body.querySelector("#warning") ? document.body.querySelector("#warning").remove() : false
+
+           if (inputDoctor.selectedIndex === 0 ||
+               inputUrgency.selectedIndex === 0 ||
+               inputNotes.value === "" || fields === false) {
+
+               firstItem.after(warning)
+           } else {
+
+               fetch(`https://ajax.test-danit.com/api/v2/cards/${this.id}`, {
+                   method: 'PUT',
+                   headers: {
+                       'Content-Type': 'application/json',
+                       'Authorization': `Bearer ${token}`
+                   },
+                   body: JSON.stringify(userValue)
+               })
+                   .then(response => response.json())
+                   .then(response => response)
+
+               blur.remove()
+           }
+       })
+
+    }
 }
 
 
@@ -375,6 +658,7 @@ export class VisitDentist extends Visit {
             .then(response => response.json())
             .then(response => this.render.call(response))
     }
+
 }
 
 export class VisitCardiologist extends Visit {
