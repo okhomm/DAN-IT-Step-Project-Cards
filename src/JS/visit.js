@@ -2,9 +2,9 @@
 import {Modal} from "./modal.js";
 
 
-const buttonVisit = document.querySelector('#add-visit-btn');
-
-buttonVisit.addEventListener('click',  () => {  new Visit().createVisit() })
+// const buttonVisit = document.querySelector('#add-visit-btn');
+//
+// buttonVisit.addEventListener('click',  () => {  new Visit().createVisit() })
 
 let userLogin = "legmann@gmail.com"
 let userPassword = "qwerty12345678"

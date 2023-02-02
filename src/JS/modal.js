@@ -1,13 +1,11 @@
 import {Visit} from "./visit.js";
 
-let token = ''
 
 const buttonIp = document.querySelector('#login-btn');
 
 buttonIp.addEventListener('click',  () => { new Modal().user() })
 
 export class Modal {
-
     blurEffect () {
         const elementBlur = document.createElement('div')
         elementBlur.id = 'idBlur';
@@ -22,6 +20,7 @@ export class Modal {
             event.code == 'Escape' ? elementBlur.remove() : false
         })
     }
+
 
     user() {
         this.blurEffect()
@@ -87,9 +86,9 @@ export class Modal {
             let result = true;
             const allInput = form.querySelectorAll('input')
             for (const input of allInput) {
-              removeError(input)
+                removeError(input)
 
-                 if(input.dataset.minLenght) {
+                if(input.dataset.minLenght) {
                     if(input.value.length < input.dataset.minLenght) {
                         removeError(input)
                         createError(input,`Мінімальна кількість символів: ${input.dataset.minLenght}!`)
@@ -120,53 +119,61 @@ export class Modal {
             event.preventDefault()
             if (localStorage.getItem('token')) {
                 blur.remove()
-                document.querySelector('#login-btn').remove()
             }
             if (validation(this) == true) {
-           }
-            async function getToken() {
-                let userLogin = document.querySelector('input[name="email"]').value;
-                let userPassword = document.querySelector('input[name="password"]').value;
 
-                fetch("https://ajax.test-danit.com/api/v2/cards/login", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ email: userLogin, password: userPassword })
-                })
-                    .then(response => response.text())
-                    .then(data => {
-                        token = data
-                        localStorage.setItem('token', token)
+
+                async function getToken() {
+                    let userLogin = document.querySelector('input[name="email"]').value;
+                    let userPassword = document.querySelector('input[name="password"]').value;
+                    fetch("https://ajax.test-danit.com/api/v2/cards/login", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email: userLogin, password: userPassword })
                     })
+                        .then(response => response.text())
+                        .then(data => {
+                            if (data === "Incorrect username or password") {
+                                console.log("Неверные данные")
+
+                            } else {
+                                localStorage.setItem('token', data)
+                                document.querySelector('#login-btn').remove()
+                                new Modal().authorization ()
+                                blur.remove()
+                            }
+                        })
+                }
+                new Modal(getToken())
             }
-            new Modal(getToken())
+
         })
 
     }
-
     authorization () {
-    const elementButtons = document.createElement('div')
-    const header = document.body.querySelector('#header')
-    elementButtons.classList = "header-right-block d-flex align-items-center"
+        const element = document.createElement('div')
+        const header = document.body.querySelector('#header')
+        element.classList = "header-right-block d-flex align-items-center"
 
-    elementButtons.innerHTML = `
+        element.innerHTML = `
             <button id="add-visit-btn" class="btn btn-outline-danger me-2" type="button">Новий візит</button>
             <button id="logout-btn" class="btn btn-danger" type="button">Вийти</button>
         `
-    header.append(elementButtons)
-    document.querySelector('#logout-btn').addEventListener('click', () => {
+        header.append(element)
 
+        element.querySelector('#add-visit-btn').addEventListener('click',  () => {  new Visit().createVisit() })
+        element.querySelector('#logout-btn').addEventListener('click',  () => {
 
-    })
-    elementButtons.querySelector('#add-visit-btn').addEventListener('click',  () => {  new Visit().createVisit() })
+            localStorage.clear()
+            element.remove()
+            element.innerHTML = `
+            <button id="login-btn" class="btn btn-danger" type="button">Увійти</button>
+        `
+            header.append(element)
+
+            document.body.querySelector('#login-btn').addEventListener('click',  () => { new Modal().user() })
+        })
+    }
 }
-
-}
-
-
-
-
-
-
