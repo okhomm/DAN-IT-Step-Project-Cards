@@ -136,7 +136,7 @@ export class Modal {
                         .then(response => response.text())
                         .then(data => {
                             if (data === "Incorrect username or password") {
-                                console.log("Неверные данные")
+                                console.log("Неверные данные!")
 
                             } else {
                                 localStorage.setItem('token', data)
