@@ -214,7 +214,7 @@ filterSearchBtn.addEventListener('click', (e) => {
     dashboardCards.classList.add('bg-light');
     visitsCard.classList.add('d-flex', 'justify-content-center', 'text-center');
 
-    if(!searchPhrase.value) {
+    if (!searchPhrase.value) {
         searchPhrase.classList.add('border', 'border-danger', 'text-danger');
         searchPhrase.value = 'Помилка! Будь-ласка введіть фразу для пошуку';
 
@@ -226,7 +226,8 @@ filterSearchBtn.addEventListener('click', (e) => {
 
     allCards.forEach(el => {
 
-        if (el.purpose.toLowerCase() === searchPhrase.value.toLowerCase() || el.notes.toLowerCase() === searchPhrase.value.toLowerCase()) {
+        if (el.purpose.trim().toLowerCase().match(searchPhrase.value.trim().toLowerCase()) ||
+            el.notes.trim().toLowerCase().match(searchPhrase.value.trim().toLowerCase())) {
             emptyVisit.innerHTML = '';
             emptyVisit.remove();
             el.doctor === "Стоматолог" ? new VisitDentist().render.call(el) : false
