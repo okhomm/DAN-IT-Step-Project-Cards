@@ -1,5 +1,5 @@
 import {Modal} from "./Modal.js";
-import {Visit} from "./Visit.js";
+import {Visit, VisitDentist, VisitCardiologist, VisitTherapist} from "./Visit.js";
 
 
 let token = "ea883a2a-cfb9-4881-8548-380bd89f98a1"
