@@ -1,9 +1,6 @@
-import {Visit} from "./visit.js";
+import {Visit} from "./Visit.js";
 
 
-const buttonIp = document.querySelector('#login-btn');
-
-buttonIp.addEventListener('click',  () => { new Modal().user() })
 
 export class Modal {
     blurEffect () {
@@ -29,7 +26,7 @@ export class Modal {
         element.id = 'idUser';
         element.innerHTML = `
                <div class="login-popup text-center container-md">
-               <label for="basic-url" class="form-label text-uppercase text-dark"><h2 id="entry">Вхід</h2>
+               <label for="basic-url" class="form-label text-uppercase text-dark"><h2 id="loginTitle">Вхід</h2>
                </label>
                <form action="" class="form" id="add-from">
                <div class="input-group mb-2">
@@ -119,6 +116,7 @@ export class Modal {
             event.preventDefault()
             if (localStorage.getItem('token')) {
                 blur.remove()
+
             }
             if (validation(this) == true) {
 
@@ -133,27 +131,25 @@ export class Modal {
                         },
                         body: JSON.stringify({ email: userLogin, password: userPassword })
                     })
-
                         .then(response => response.text())
                         .then(data => {
                             if (data === "Incorrect username or password") {
-                                document.querySelector('#error') ? document.querySelector('#error').remove() : false
-                                const entry = document.querySelector('#entry')
-                                const error = document.createElement('p')
-                                error.id ='error'
-                                error.textContent = 'Невірні дані !'
-                                entry.classList.add('text-error')
-                                error.style.cssText = 'color: #800000; font-weight: bold;'
-                                entry.append(error)
+                                document.body.querySelector("#warning") ? document.body.querySelector("#warning").remove() : false
+                                const warning = document.createElement('div')
+                                const loginTitle = document.body.querySelector('#loginTitle')
+                                warning.id = "warning"
 
+                                warning.innerHTML = `
+                            <div>
+                                <h5 style="color: #800000">Помилка в логіні чи паролі</h5>
+                            </div>
+                             `
+                                loginTitle.after(warning)
                             } else {
                                 localStorage.setItem('token', data)
-                                document.querySelector('#login-btn').remove()
                                 new Modal().authorization ()
                                 blur.remove()
-                                document.querySelector('.greetings').remove()
                             }
-
                         })
                 }
                 new Modal(getToken())
@@ -163,9 +159,11 @@ export class Modal {
 
     }
     authorization () {
+        document.querySelector('.greetings').remove()
+        document.querySelector('#login-btn').remove()
+
         const element = document.createElement('div')
-        const header = document.body.querySelector('#header')
-        element.classList = "header-right-block d-flex align-items-center"
+        const header = document.body.querySelector('#headerButton')
 
         element.innerHTML = `
             <button id="add-visit-btn" class="btn btn-outline-danger me-2" type="button">Новий візит</button>
@@ -173,19 +171,37 @@ export class Modal {
         `
         header.append(element)
 
-        element.querySelector('#add-visit-btn').addEventListener('click',  () => {  new Visit().createVisit() })
-        element.querySelector('#logout-btn').addEventListener('click',  () => {
+        const text = document.createElement('p')
+        const logo = document.querySelector('.logo')
+        text.id = 'text'
+        text.style.cssText = 'color: black; margin-top: 40px;'
+        text.innerHTML = `
+           <div>
+             <p class="text">Вітаємо, ви успішно авторизувалися !</p>
+            </div>
+            `
+        logo.after(text)
 
-            localStorage.clear()
+        new Visit().listAllCards()
+
+        element.querySelector('#add-visit-btn').addEventListener('click',  () => {  new Visit().createVisit() })
+        element.querySelector('#logout-btn').addEventListener('click',  async () => {
+
+            await localStorage.clear()
             element.remove()
+            text.remove()
             element.innerHTML = `
             <button id="login-btn" class="btn btn-danger" type="button">Увійти</button>
-           
         `
-
             header.append(element)
 
-            document.body.querySelector('#login-btn').addEventListener('click',  () => { new Modal().user() })
+
+            new Visit().emptyVillage()
+
+            document.body.querySelector('#login-btn').addEventListener('click',  () => {
+                new Modal().user()
+            })
         })
     }
 }
+

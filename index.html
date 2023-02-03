@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./src/img/favicon.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <title>Step Project "Cards"</title>
@@ -15,11 +16,14 @@
 
   <header id="header" class="header d-flex justify-content-between mt-3">
         <div class="header-left-block d-flex align-items-center">
-            <div class="logo me-5"><img src="./src/img/logo.png" alt="" width="300px"></div>
+            <div class="logo me-5" id="logo">
+                <a href="./">
+                    <img src="./src/img/logo.png" alt="" width="300px">
+                </a>
+            </div>
             <span class="greetings">Вітаємо, зайдіть в систему щоб побачити візити!</span>
         </div>
         <div id="headerButton" class="header-right-block d-flex align-items-center">
-<!--            <button id="add-visit-btn" class="btn btn-outline-danger me-2" type="button">Новий візит</button>-->
             <button id="login-btn" class="btn btn-danger" type="button">Увійти</button>
         </div>
     </header>
@@ -31,20 +35,24 @@
             <div class="container-fluid d-flex justify-content-around align-items-center">
                 <form class="d-flex align-items-center" role="search">
                     <div class="input-group me-5">
-                        <input type="text" class="form-control" size="350" placeholder="Пошук..."
+                        <input id="searchPhrase" type="text" class="form-control" size="350" placeholder="Пошук..."
                                aria-label="Recipient's username" aria-describedby="button-addon2">
-                        <button class="btn btn-danger" type="button" id="button-addon2">Знайти</button>
+                        <button id="filterSearchBtn" class="btn btn-danger" type="button" id="button-addon2">Знайти</button>
                     </div>
+
                     <div id="filterStatusButtons" class="d-flex">
                         <span class="navbar-brand">Статус</span>
                         <button id="filterOpenBtn" class="btn btn-outline-danger me-1" type="submit">Open</button>
                         <button id="filterDoneBtn" class="btn btn-outline-danger me-5" type="submit">Done</button>
                     </div>
 
-                    <span class="navbar-brand">Терміновість</span>
-                    <button id="filterHigh" class="btn btn btn-danger me-1" type="submit" disabled>High</button>
-                    <button id="filterNormal" class="btn btn btn-outline-danger me-1" type="submit">Normal</button>
-                    <button id="filterLow" class="btn btn btn-outline-danger" type="submit">Low</button>
+                    <div id="filterUrgencyButtons" class="d-flex">
+                        <span class="navbar-brand">Терміновість</span>
+                        <button id="filterHigh" class="btn btn btn-outline-danger me-1" type="submit">High</button>
+                        <button id="filterNormal" class="btn btn btn-outline-danger me-1" type="submit">Normal</button>
+                        <button id="filterLow" class="btn btn btn-outline-danger" type="submit">Low</button>
+                    </div>
+
                 </form>
             </div>
         </nav>
@@ -61,8 +69,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
         crossorigin="anonymous"></script>
-<script type="module" src="src/JS/modal.js"></script>
-<script type="module" src="src/JS/visit.js"></script>
-<script type="module" src="src/JS/filter.js"></script>
+<!--<script type="module" src="src/JS/Modal.js"></script>-->
+<!--<script type="module" src="src/JS/Visit.js"></script>-->
+<script type="module" src="src/JS/Filter.js"></script>
+<script type="module" src="src/JS/main.js"></script>
 </body>
 </html>
