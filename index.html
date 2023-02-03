@@ -16,7 +16,11 @@
 
   <header id="header" class="header d-flex justify-content-between mt-3">
         <div class="header-left-block d-flex align-items-center">
-            <div class="logo me-5"><img src="./src/img/logo.png" alt="" width="300px"></div>
+            <div class="logo me-5">
+                <a href="./">
+                    <img src="./src/img/logo.png" alt="" width="300px">
+                </a>
+            </div>
             <span class="greetings">Вітаємо, зайдіть в систему щоб побачити візити!</span>
         </div>
         <div id="headerButton" class="header-right-block d-flex align-items-center">
@@ -31,9 +35,9 @@
             <div class="container-fluid d-flex justify-content-around align-items-center">
                 <form class="d-flex align-items-center" role="search">
                     <div class="input-group me-5">
-                        <input type="text" class="form-control" size="350" placeholder="Пошук..."
+                        <input id="searchPhrase" type="text" class="form-control" size="350" placeholder="Пошук..."
                                aria-label="Recipient's username" aria-describedby="button-addon2">
-                        <button class="btn btn-danger" type="button" id="button-addon2">Знайти</button>
+                        <button id="filterSearchBtn" class="btn btn-danger" type="button" id="button-addon2">Знайти</button>
                     </div>
 
                     <div id="filterStatusButtons" class="d-flex">
@@ -42,10 +46,13 @@
                         <button id="filterDoneBtn" class="btn btn-outline-danger me-5" type="submit">Done</button>
                     </div>
 
-                    <span class="navbar-brand">Терміновість</span>
-                    <button id="filterHigh" class="btn btn btn-danger me-1" type="submit" disabled>High</button>
-                    <button id="filterNormal" class="btn btn btn-outline-danger me-1" type="submit">Normal</button>
-                    <button id="filterLow" class="btn btn btn-outline-danger" type="submit">Low</button>
+                    <div id="filterUrgencyButtons" class="d-flex">
+                        <span class="navbar-brand">Терміновість</span>
+                        <button id="filterHigh" class="btn btn btn-outline-danger me-1" type="submit">High</button>
+                        <button id="filterNormal" class="btn btn btn-outline-danger me-1" type="submit">Normal</button>
+                        <button id="filterLow" class="btn btn btn-outline-danger" type="submit">Low</button>
+                    </div>
+
                 </form>
             </div>
         </nav>

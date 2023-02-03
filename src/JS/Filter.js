@@ -2,9 +2,7 @@ import {Modal} from "./Modal.js";
 import {Visit, VisitDentist, VisitCardiologist, VisitTherapist} from "./Visit.js";
 
 
-// let token = "ea883a2a-cfb9-4881-8548-380bd89f98a1"
 const CARDS_API = "https://ajax.test-danit.com/api/v2/cards";
-
 
 const lowButton = document.querySelector('#filterLow');
 const visitsCard = document.querySelector('#visitsCard');
@@ -44,18 +42,21 @@ filterStatusButtons.addEventListener('click', async (e) => {
         filterOpenBtn.disabled = true;
 
         visitsCard.innerHTML = '';
+        dashboardCards.classList.add('bg-light');
+        visitsCard.classList.add('d-flex', 'justify-content-center', 'text-center');
 
         allCards.forEach(el => {
+
             if (el.status === 'open') {
+                emptyVisit.innerHTML = '';
+                emptyVisit.remove();
                 el.doctor === "Стоматолог" ? new VisitDentist().render.call(el) : false
                 el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
                 el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
 
                 visitsCard.classList.remove('d-flex', 'justify-content-center', 'text-center');
             } else {
-                dashboardCards.classList.add('bg-light');
-                visitsCard.classList.add('d-flex', 'justify-content-center', 'text-center');
-                visitsCard.innerHTML = '<p id="dashboardText" class="empty-text pb-5 pt-5 display-6 text-secondary">Немає візитів</p>';
+                visitsCard.append(emptyVisit);
             }
         })
 
@@ -69,18 +70,19 @@ filterStatusButtons.addEventListener('click', async (e) => {
         filterDoneBtn.disabled = true;
 
         visitsCard.innerHTML = '';
+        dashboardCards.classList.add('bg-light');
+        visitsCard.classList.add('d-flex', 'justify-content-center', 'text-center');
 
         allCards.forEach(el => {
             if (el.status === 'done') {
+                emptyVisit.innerHTML = '';
+                emptyVisit.remove();
                 el.doctor === "Стоматолог" ? new VisitDentist().render.call(el) : false
                 el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
                 el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
-
                 visitsCard.classList.remove('d-flex', 'justify-content-center', 'text-center');
             } else {
-                dashboardCards.classList.add('bg-light');
-                visitsCard.classList.add('d-flex', 'justify-content-center', 'text-center');
-                visitsCard.innerHTML = '<p id="dashboardText" class="empty-text pb-5 pt-5 display-6 text-secondary">Немає візитів</p>';
+                visitsCard.append(emptyVisit);
             }
         })
     }
@@ -197,4 +199,43 @@ filterUrgencyButtons.addEventListener('click', (e) => {
             }
         })
     }
+})
+
+// ---------------------------------------------------------------------
+// Search Filter
+// ---------------------------------------------------------------------
+
+const filterSearchBtn = document.querySelector('#filterSearchBtn');
+const searchPhrase = document.querySelector('#searchPhrase');
+filterSearchBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    visitsCard.innerHTML = '';
+    dashboardCards.classList.add('bg-light');
+    visitsCard.classList.add('d-flex', 'justify-content-center', 'text-center');
+
+    if(!searchPhrase.value) {
+        searchPhrase.classList.add('border', 'border-danger', 'text-danger');
+        searchPhrase.value = 'Помилка! Будь-ласка введіть фразу для пошуку';
+
+        searchPhrase.addEventListener('click', () => {
+            searchPhrase.value = '';
+            searchPhrase.classList.remove('border', 'border-danger', 'text-danger');
+        })
+    }
+
+    allCards.forEach(el => {
+
+        if (el.purpose.toLowerCase() === searchPhrase.value.toLowerCase() || el.notes.toLowerCase() === searchPhrase.value.toLowerCase()) {
+            emptyVisit.innerHTML = '';
+            emptyVisit.remove();
+            el.doctor === "Стоматолог" ? new VisitDentist().render.call(el) : false
+            el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
+            el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
+            visitsCard.classList.remove('d-flex', 'justify-content-center', 'text-center');
+        } else {
+            visitsCard.append(emptyVisit);
+        }
+    })
+
 })
