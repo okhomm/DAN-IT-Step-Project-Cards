@@ -1,5 +1,6 @@
 
-import {Modal} from "./modal.js";
+import {Modal} from "./Modal.js";
+
 
 
 // const buttonVisit = document.querySelector('#add-visit-btn');
@@ -8,35 +9,25 @@ import {Modal} from "./modal.js";
 
 let userLogin = "legmann@gmail.com"
 let userPassword = "qwerty12345678"
-let token = "ea883a2a-cfb9-4881-8548-380bd89f98a1"
+// let token = "691806b3-1577-40fb-81e4-044162f4d5b6"
+
+// console.log(localStorage.getItem("token"))
 
 
-fetch("https://ajax.test-danit.com/api/v2/cards", {
-    method: 'GET',
-    headers: {
-        'Authorization': `Bearer ${token}`
-    },
-})
-    .then(response => response.json())
-    .then(data => data.forEach(el => {
-        new Visit().clear()
-        el.doctor === "Стоматолог" ? new VisitDentist().render.call(el) : false
-        el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
-        el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
-
-        // console.log(el)
-
-
-    }))
-
-// fetch("https://ajax.test-danit.com/api/v2/cards/144518", {
-//     method: 'DELETE',
+// fetch("https://ajax.test-danit.com/api/v2/cards", {
+//     method: 'GET',
 //     headers: {
 //         'Authorization': `Bearer ${token}`
 //     },
 // })
-//     .then(response => response.text())
-//     .then(data => data === "" ? console.log("gogi") : false)
+//     .then(response => response.json())
+//     .then(data => data.forEach(el => {
+//         new Visit().clear()
+//         el.doctor === "Стоматолог" ? new VisitDentist().render.call(el) : false
+//         el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
+//         el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
+//     }))
+
 
 
 
@@ -163,6 +154,26 @@ export class Visit {
 
     }
 
+    listAllCards () {
+        fetch("https://ajax.test-danit.com/api/v2/cards", {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (localStorage.getItem("token")) {
+                data.forEach(el => {
+                    new Visit().clear()
+                    el.doctor === "Стоматолог" ? new VisitDentist().render.call(el) : false
+                    el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
+                    el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
+                })
+            }
+            })
+    }
+
     clear () {
         const dashboardCards = document.body.querySelector('#dashboardCards')
         dashboardCards.classList = "cards-dashboard rounded mt-4 p-3 h-100 w-100"
@@ -172,6 +183,41 @@ export class Visit {
 
         const dashboardText = document.body.querySelector('#dashboardText')
         dashboardText ? dashboardText.remove() : false
+    }
+    emptyVillage () {
+        const dashboardCards = document.body.querySelector('#dashboardCards')
+        dashboardCards.classList = "cards-dashboard rounded mt-4 p-3 h-100 w-100 bg-light"
+
+        const visitsCard = document.body.querySelector('#visitsCard')
+        visitsCard.classList = "row row-cols-1 row-cols-md-3 g-4 d-flex justify-content-center text-center"
+        visitsCard.replaceChildren()
+
+        const warning = document.createElement('p')
+        warning.id = "dashboardText"
+        warning.classList = "empty-text pb-5 pt-5 display-6 text-secondary"
+
+        warning.innerText = "Немає візитів"
+
+        visitsCard.append(warning)
+    }
+
+    cardsOver () {
+        fetch("https://ajax.test-danit.com/api/v2/cards", {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.length === 0) {
+                    this.emptyVillage()
+                }
+
+
+            })
+
+
     }
 
     createCard ({doctor, description, name, id}) {
@@ -236,18 +282,21 @@ export class Visit {
             await fetch(`https://ajax.test-danit.com/api/v2/cards/${id}`, {
                 method: 'DELETE',
                 headers: {
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
                 },
             })
                 .then(response => response.text())
-                .then(data => data === "" ? doctorCard.remove() : false)
+                .then(data => {
+                    data === "" ? doctorCard.remove() : false
+                    this.cardsOver ()
+                })
         })
 
         doctorCard.querySelector("#buttonView").addEventListener('click',  async () => {
             await fetch(`https://ajax.test-danit.com/api/v2/cards/${id}`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
                 },
             })
                 .then(response => response.json())
@@ -260,11 +309,12 @@ export class Visit {
             await fetch(`https://ajax.test-danit.com/api/v2/cards/${id}`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
                 },
             })
                 .then(response => response.json())
                 .then(data => new Visit().createEdit.call(data))
+
         })
 
 
@@ -320,6 +370,10 @@ export class Visit {
               <tr>
                 <td class="fw-bold">Захворювання</td>
                 <td>${this.diseases}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">Статус візиту</td>
+                <td>${this.status}</td>
               </tr>
 
               </tbody>
@@ -384,6 +438,16 @@ export class Visit {
                             <textarea class="form-control" name="inputNotes" id="inputNotes" rows="3"">${this.notes}</textarea>
                         </div>
                     </div>
+                    
+                    <div class="row mb-3">
+                        <label for="inputStatus" class="col-sm-2 col-form-label">Статус візита</label>
+                        <div class="col-sm-10">
+                            <select class="form-select" name="inputStatus" id="inputStatus" aria-label="Default select example">
+                                <option selected value="open">Open</option>
+                                <option value="done">Done</option>
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="row mb-3" id="lastElem">
                         <label for="inputUrgency" class="col-sm-2 col-form-label">Терміновість візита</label>
@@ -421,7 +485,7 @@ export class Visit {
            await fetch(`https://ajax.test-danit.com/api/v2/cards/${this.id}`, {
                method: 'DELETE',
                headers: {
-                   'Authorization': `Bearer ${token}`
+                   'Authorization': `Bearer ${localStorage.getItem("token")}`
                },
            })
                .then(response => response.text())
@@ -430,6 +494,7 @@ export class Visit {
                        document.getElementById(`${this.id}`).remove()
                        blur.remove()
                    }
+                   new Visit().cardsOver ()
                })
        })
 
@@ -437,7 +502,7 @@ export class Visit {
 
 
 
-        this.doctor === "Терапевт" ? userEdit.inputDoctor.selectedIndex = 3 : false
+       this.doctor === "Терапевт" ? userEdit.inputDoctor.selectedIndex = 3 : false
         this.doctor === "Стоматолог" ? userEdit.inputDoctor.selectedIndex = 2 : false
         this.doctor === "Кардіолог" ? userEdit.inputDoctor.selectedIndex = 1 : false
 
@@ -445,6 +510,8 @@ export class Visit {
         this.description === "Low" ? userEdit.inputUrgency.selectedIndex = 1 : false
         this.description === "Normal" ? userEdit.inputUrgency.selectedIndex = 2 : false
         this.description === "High" ? userEdit.inputUrgency.selectedIndex = 3 : false
+
+       this.status === "open" ? userEdit.inputStatus.selectedIndex = 0 : userEdit.inputStatus.selectedIndex = 1
 
 
        const lastElem = document.body.querySelector('#lastElem')
@@ -524,7 +591,7 @@ export class Visit {
                    notes: inputNotes.value,
                    description: inputUrgency.value,
                    date: inputDate.value,
-                   status: "open"
+                   status: inputStatus.value,
                }
            } else if (userEdit.inputDoctor.value === "Cardiologist") {
             userValue = {
@@ -537,7 +604,7 @@ export class Visit {
                    masses: inputMasses.value,
                    diseases: inputDiseases.value,
                    age: inputAge.value,
-                   status: "open"
+                   status: inputStatus.value,
                }
            } else if (userEdit.inputDoctor.value === "Therapist") {
             userValue = {
@@ -547,7 +614,7 @@ export class Visit {
                    notes: inputNotes.value,
                    description: inputUrgency.value,
                    age: inputAge.value,
-                   status: "open"
+                   status: inputStatus.value,
                }
            }
 
@@ -580,13 +647,19 @@ export class Visit {
                    method: 'PUT',
                    headers: {
                        'Content-Type': 'application/json',
-                       'Authorization': `Bearer ${token}`
+                       'Authorization': `Bearer ${localStorage.getItem("token")}`
                    },
                    body: JSON.stringify(userValue)
                })
                    .then(response => response.json())
-                   .then(response => response)
-
+                   .then(response => {
+                       if (typeof response === "object") {
+                           let color = ""
+                           userEdit.inputUrgency.value === "High" ? color = "danger" : userEdit.inputUrgency.value === "Low" ? color = "primary" : color = "warning"
+                           document.getElementById(`${this.id}`).querySelector("div").classList = `card border-${color} mb-3 h-100`
+                           document.getElementById(`${this.id}`).querySelector("div").firstElementChild.classList = `card-header bg-${color} border-${color}`
+                       }
+                   })
                blur.remove()
            }
        })
@@ -643,7 +716,7 @@ export class VisitDentist extends Visit {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
             },
             body: JSON.stringify({
                 doctor: inputDoctor.options[inputDoctor.selectedIndex].text,
@@ -721,7 +794,7 @@ export class VisitCardiologist extends Visit {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
             },
             body: JSON.stringify({
                 doctor: inputDoctor.options[inputDoctor.selectedIndex].text,
@@ -781,7 +854,7 @@ export class VisitTherapist extends Visit {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
             },
             body: JSON.stringify({
                 doctor: inputDoctor.options[inputDoctor.selectedIndex].text,

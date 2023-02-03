@@ -1,4 +1,6 @@
-import {Visit, VisitDentist, VisitTherapist, VisitCardiologist} from "./visit.js";
+import {Modal} from "./Modal.js";
+import {Visit} from "./Visit.js";
+
 
 let token = "ea883a2a-cfb9-4881-8548-380bd89f98a1"
 const CARDS_API = "https://ajax.test-danit.com/api/v2/cards";
