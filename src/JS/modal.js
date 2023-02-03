@@ -29,7 +29,7 @@ export class Modal {
         element.id = 'idUser';
         element.innerHTML = `
                <div class="login-popup text-center container-md">
-               <label for="basic-url" class="form-label text-uppercase text-dark"><h2>Вхід</h2>
+               <label for="basic-url" class="form-label text-uppercase text-dark"><h2 id="entry">Вхід</h2>
                </label>
                <form action="" class="form" id="add-from">
                <div class="input-group mb-2">
@@ -133,17 +133,27 @@ export class Modal {
                         },
                         body: JSON.stringify({ email: userLogin, password: userPassword })
                     })
+
                         .then(response => response.text())
                         .then(data => {
                             if (data === "Incorrect username or password") {
-                                console.log("Неверные данные!")
+                                document.querySelector('#error') ? document.querySelector('#error').remove() : false
+                                const entry = document.querySelector('#entry')
+                                const error = document.createElement('p')
+                                error.id ='error'
+                                error.textContent = 'Невірні дані !'
+                                entry.classList.add('text-error')
+                                error.style.cssText = 'color: #800000; font-weight: bold;'
+                                entry.append(error)
 
                             } else {
                                 localStorage.setItem('token', data)
                                 document.querySelector('#login-btn').remove()
                                 new Modal().authorization ()
                                 blur.remove()
+                                document.querySelector('.greetings').remove()
                             }
+
                         })
                 }
                 new Modal(getToken())
@@ -170,7 +180,9 @@ export class Modal {
             element.remove()
             element.innerHTML = `
             <button id="login-btn" class="btn btn-danger" type="button">Увійти</button>
+           
         `
+
             header.append(element)
 
             document.body.querySelector('#login-btn').addEventListener('click',  () => { new Modal().user() })
