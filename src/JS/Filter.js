@@ -2,7 +2,7 @@ import {Modal} from "./Modal.js";
 import {Visit, VisitDentist, VisitCardiologist, VisitTherapist} from "./Visit.js";
 
 
-let token = "ea883a2a-cfb9-4881-8548-380bd89f98a1"
+// let token = "ea883a2a-cfb9-4881-8548-380bd89f98a1"
 const CARDS_API = "https://ajax.test-danit.com/api/v2/cards";
 
 
@@ -18,7 +18,7 @@ emptyVisit.innerHTML = 'Немає візитів';
 const getAllCards = async () => {
     const response = await fetch(CARDS_API, {
         method: 'GET',
-        headers: {'Authorization': `Bearer ${token}`}
+        headers: {'Authorization': `Bearer ${localStorage.getItem("token")}`}
     });
     const data = await response.json();
     return data;
