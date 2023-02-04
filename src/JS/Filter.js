@@ -19,6 +19,7 @@ const getAllCards = async () => {
         headers: {'Authorization': `Bearer ${localStorage.getItem("token")}`}
     });
     const data = await response.json();
+    console.log(data);
     return data;
 };
 
@@ -227,6 +228,8 @@ filterSearchBtn.addEventListener('click', (e) => {
     allCards.forEach(el => {
 
         if (el.purpose.trim().toLowerCase().match(searchPhrase.value.trim().toLowerCase()) ||
+            el.name.trim().toLowerCase().match(searchPhrase.value.trim().toLowerCase()) ||
+            el.doctor.trim().toLowerCase().match(searchPhrase.value.trim().toLowerCase()) ||
             el.notes.trim().toLowerCase().match(searchPhrase.value.trim().toLowerCase())) {
             emptyVisit.innerHTML = '';
             emptyVisit.remove();
