@@ -144,9 +144,9 @@ export class Visit {
 
                 firstItem.after(warning)
             } else {
-                userVisit.inputDoctor.value === "Dentist" ? new VisitDentist().dentistCard() : false
-                userVisit.inputDoctor.value === "Cardiologist" ? new VisitCardiologist().cardiologistCard() : false
-                userVisit.inputDoctor.value === "Therapist" ? new VisitTherapist().therapistCard() : false
+                userVisit.inputDoctor.value === "Dentist" ? new VisitDentist().render() : false
+                userVisit.inputDoctor.value === "Cardiologist" ? new VisitCardiologist().render() : false
+                userVisit.inputDoctor.value === "Therapist" ? new VisitTherapist().render() : false
                 blur.remove()
             }
         })
@@ -166,9 +166,9 @@ export class Visit {
                 if (localStorage.getItem("token")) {
                 data.forEach(el => {
                     new Visit().clear()
-                    el.doctor === "Стоматолог" ? new VisitDentist().render.call(el) : false
-                    el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
-                    el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
+                    el.doctor === "Стоматолог" ? new Visit().createCard.call(el) : false
+                    el.doctor === "Кардіолог" ? new Visit().createCard.call(el) : false
+                    el.doctor === "Терапевт" ? new Visit().createCard.call(el) : false
                 })
             }
             })
@@ -220,16 +220,16 @@ export class Visit {
 
     }
 
-    createCard ({doctor, description, name, id}) {
+    createCard (obj) {
         const doctorCard = document.createElement('div')
         const element = document.body.querySelector('#visitsCard')
         doctorCard.classList = "col"
 
-        doctorCard.id = id
+        doctorCard.id = this.id
 
         let color = ""
 
-        description === "High" ? color = "danger" : description === "Low" ? color = "primary" : color = "warning"
+        this.description === "High" ? color = "danger" : this.description === "Low" ? color = "primary" : color = "warning"
 
         doctorCard.innerHTML = `
                     <div class="card border-${color} mb-3 h-100">
@@ -244,7 +244,7 @@ export class Visit {
                                     <path
                                         d="M.88 8C-2.427 1.68 4.41-2 7.823 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C11.59-2 18.426 1.68 15.12 8h-2.783l-1.874-4.686a.5.5 0 0 0-.945.049L7.921 8.956 6.464 5.314a.5.5 0 0 0-.88-.091L3.732 8H.88Z"/>
                                 </svg>
-                                <h4 id="docName" class="doc-name ms-2">${doctor}</h4></p>
+                                <h4 id="docName" class="doc-name ms-2">${this.doctor}</h4></p>
                             </div>
 
                             <div class="patient-block d-flex align-items-center">
@@ -255,7 +255,11 @@ export class Visit {
                                     <path
                                         d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2ZM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96c.026-.163.04-.33.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1.006 1.006 0 0 1 1 12V4Z"/>
                                 </svg>
-                                <span id="userName" class="patient-name ms-1">${name}</span>
+                                <span id="userName" class="patient-name ms-1" style="overflow: auto">${this.name}</span>
+                                <div class="Purpose" style="visibility: hidden">${this.purpose}</div>
+                                <div class="Notes" style="visibility: hidden">${this.notes}</div>
+                                <div class="Description" style="visibility: hidden">${this.description}</div>
+                                <div class="Status" style="visibility: hidden">${this.status}</div>
                             </div>
                         </div>
                         <div class="card-footer bg-transparent d-flex justify-content-around align-items-center">
@@ -279,7 +283,7 @@ export class Visit {
 
 
         doctorCard.querySelector("#buttonDelete").addEventListener('click',  async () => {
-            await fetch(`https://ajax.test-danit.com/api/v2/cards/${id}`, {
+            await fetch(`https://ajax.test-danit.com/api/v2/cards/${this.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem("token")}`
@@ -288,12 +292,12 @@ export class Visit {
                 .then(response => response.text())
                 .then(data => {
                     data === "" ? doctorCard.remove() : false
-                    this.cardsOver ()
+                    new Visit().cardsOver ()
                 })
         })
 
         doctorCard.querySelector("#buttonView").addEventListener('click',  async () => {
-            await fetch(`https://ajax.test-danit.com/api/v2/cards/${id}`, {
+            await fetch(`https://ajax.test-danit.com/api/v2/cards/${this.id}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem("token")}`
@@ -306,7 +310,7 @@ export class Visit {
 
 
         doctorCard.querySelector("#buttonEdit").addEventListener('click',  async () => {
-            await fetch(`https://ajax.test-danit.com/api/v2/cards/${id}`, {
+            await fetch(`https://ajax.test-danit.com/api/v2/cards/${this.id}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem("token")}`
@@ -357,6 +361,10 @@ export class Visit {
               </tr>
               <tr>
                 <td class="fw-bold">Вік</td>
+                <td>${this.age}</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">Дата останнього відвідування</td>
                 <td>${this.date}</td>
               </tr>
               <tr>
@@ -402,7 +410,7 @@ export class Visit {
         element.innerHTML = `
             <div class="new-visit-popup text-center">
                 <label for="basic-url" class="form-label text-uppercase text-dark">
-                    <h2>Редагувати візит</h2>
+                    <h2 id="editVisit">Редагувати візит</h2>
                 </label>  
                 <form name="edit">
 
@@ -525,6 +533,7 @@ export class Visit {
               </div>
           </div>
           `
+       dentistElement.id = "dentistItem"
        this.doctor === "Стоматолог" ? lastElem.after(dentistElement) : false
 
        const cardiologistElement = document.createElement('div')
@@ -556,6 +565,7 @@ export class Visit {
                          </div>
           </div>
           `
+       cardiologistElement.id = "cardiologistItem"
        this.doctor === "Кардіолог" ? lastElem.after(cardiologistElement) : false
 
        const therapistElement = document.createElement('div')
@@ -567,6 +577,7 @@ export class Visit {
               </div>
           </div>
           `
+       therapistElement.id = "therapistItem"
        this.doctor === "Терапевт" ? lastElem.after(therapistElement) : false
 
        userEdit.inputDoctor.addEventListener("change", (ev) => {
@@ -619,7 +630,7 @@ export class Visit {
            }
 
            const warning = document.createElement('div')
-           const firstItem = document.body.querySelector('#newVisit')
+           const firstItem = document.body.querySelector('#editVisit')
            warning.id = "warning"
 
            warning.innerHTML = `
@@ -697,21 +708,6 @@ export class VisitDentist extends Visit {
         element.after(dentistElement)
     }
     render () {
-
-        const obj = {
-            doctor : this.doctor,
-            description : this.description,
-            name : this.name,
-            id : this.id,
-            purpose : this.purpose,
-            notes : this.notes,
-            date: this.date,
-            status : this.status,
-        }
-        new Visit().createCard(obj)
-
-    }
-    dentistCard () {
         fetch("https://ajax.test-danit.com/api/v2/cards", {
             method: 'POST',
             headers: {
@@ -729,7 +725,7 @@ export class VisitDentist extends Visit {
             })
         })
             .then(response => response.json())
-            .then(response => this.render.call(response))
+            .then(response => new Visit().createCard.call(response))
     }
 
 }
@@ -774,22 +770,6 @@ export class VisitCardiologist extends Visit {
         element.after(cardiologistElement)
     }
     render () {
-        const obj = {
-            doctor : this.doctor,
-            description : this.description,
-            name : this.name,
-            id : this.id,
-            purpose : this.purpose,
-            pressure : this.pressure,
-            notes : this.notes,
-            masses : this.masses,
-            diseases : this.diseases,
-            age : this.age,
-            status : this.status,
-        }
-        new Visit().createCard(obj)
-    }
-    cardiologistCard () {
         fetch("https://ajax.test-danit.com/api/v2/cards", {
             method: 'POST',
             headers: {
@@ -810,7 +790,7 @@ export class VisitCardiologist extends Visit {
             })
         })
             .then(response => response.json())
-            .then(response => this.render.call(response))
+            .then(response => new Visit().createCard.call(response))
     }
 
 
@@ -834,22 +814,7 @@ export class VisitTherapist extends Visit {
 
         element.after(therapistElement)
     }
-
     render () {
-        const obj = {
-            doctor : this.doctor,
-            description : this.description,
-            name : this.name,
-            id : this.id,
-            purpose : this.purpose,
-            notes : this.notes,
-            age : this.age,
-            status : this.status,
-        }
-        new Visit().createCard(obj)
-    }
-
-    therapistCard () {
         fetch("https://ajax.test-danit.com/api/v2/cards", {
             method: 'POST',
             headers: {
@@ -867,7 +832,7 @@ export class VisitTherapist extends Visit {
             })
         })
             .then(response => response.json())
-            .then(response => this.render.call(response))
+            .then(response => new Visit().createCard.call(response))
     }
 
 }
