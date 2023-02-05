@@ -211,7 +211,7 @@ export class Modal {
                 ` <button id="login-btn" class="btn btn-danger" type="button">Увійти</button> `
             header.append(element)
 
-            new Visit().emptyVillage()
+            new Visit().emptyVisits()
 
             document.body.querySelector('#login-btn').addEventListener('click',  () => {
                 new Modal().user()
