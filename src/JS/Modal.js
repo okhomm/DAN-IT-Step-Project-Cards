@@ -161,6 +161,7 @@ export class Modal {
                                 loginTitle.after(warning)
                             } else {
                                 localStorage.setItem('token', data)
+                                localStorage.setItem('user', userLogin)
                                 new Modal().authorization ()
                                 blur.remove()
                             }
@@ -181,9 +182,8 @@ export class Modal {
 
         const text = document.createElement('p')
         const logo = document.querySelector('.logo')
-        let userLogin = document.querySelector('input[name="email"]').value
         text.style.cssText = 'color: black; margin: 15px 0 0 0;'
-        text.innerHTML = ` <p class="text">Вітаємо ${userLogin}, ви успішно авторизувалися !</p> `
+        text.innerHTML = ` <p class="text">Вітаємо ${localStorage.getItem('user')}, ви успішно авторизувалися !</p> `
         logo.after(text)
 
         element.innerHTML = `
