@@ -28,7 +28,7 @@ Filter by status, filter by urgency, search filter
 ```
 
 ## Links to project
-https://legmann.github.io/DAN-IT-Step-Project-Cards/
+https://legmann.github.io/DAN-IT-Step-Project-Cards/ <br>
 https://github.com/legmann/DAN-IT-Step-Project-Cards
 
 
