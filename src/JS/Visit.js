@@ -2,10 +2,6 @@
 import {Modal} from "./Modal.js";
 
 
-let userLogin = "legmann@gmail.com"
-let userPassword = "qwerty12345678"
-
-
 export class Visit {
 
     createVisit () {
@@ -158,7 +154,7 @@ export class Visit {
         const dashboardText = document.body.querySelector('#dashboardText')
         dashboardText ? dashboardText.remove() : false
     }
-    emptyVillage () {
+    emptyVisits () {
         const dashboardCards = document.body.querySelector('#dashboardCards')
         dashboardCards.classList = "cards-dashboard rounded mt-4 p-3 h-100 w-100 bg-light"
 
@@ -185,7 +181,7 @@ export class Visit {
             .then(response => response.json())
             .then(data => {
                 if (data.length === 0) {
-                    this.emptyVillage()
+                    this.emptyVisits()
                 }
 
 

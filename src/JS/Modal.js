@@ -134,7 +134,6 @@ export class Modal {
             }
             if (validation(this) == true) {
 
-
                 async function getToken() {
                     let userLogin = document.querySelector('input[name="email"]').value;
                     let userPassword = document.querySelector('input[name="password"]').value;
@@ -183,7 +182,7 @@ export class Modal {
         const text = document.createElement('p')
         const logo = document.querySelector('.logo')
         text.style.cssText = 'color: black; margin: 15px 0 0 0;'
-        text.innerHTML = ` <p class="text">Вітаємо ${localStorage.getItem('user')}, ви успішно авторизувалися !</p> `
+        text.innerHTML = ` <p class="text">Вітаємо <strong>${localStorage.getItem('user')}</strong>!</p> `
         logo.after(text)
 
         element.innerHTML = `
