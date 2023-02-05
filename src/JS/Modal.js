@@ -43,8 +43,11 @@ export class Modal {
                <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                </svg>
                </span>
-               <input name="password" data-required="true" data-max-lenght="50" data-min-lenght="2" type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"
-               placeholder="enter your password">
+               <input name="password" data-required="true" data-max-lenght="50" data-min-lenght="2"  class="form-control pass" id="basic-url" aria-describedby="basic-addon3"
+               type="password" placeholder="enter your password">
+               <div class="password-btn">
+               <img src="/src/img/icon.png" alt="img" style="width: 7%; position: absolute; top: 8px; right: -30px; cursor: pointer;">
+               </div>
                </div>
                <div class="buttons-block d-flex justify-content-center align-items-center">
                <button type="button" class="btn btn-secondary me-2" id="button-close" style="width: 100px">Закрити</button>
@@ -111,6 +114,17 @@ export class Modal {
             }
             return result
         }
+
+        function showPass() {
+            const btn = document.querySelector('.password-btn')
+            const input = document.querySelector('.pass')
+            btn.addEventListener('click', () => {
+                if (input.getAttribute('type') === 'password') {
+                    input.setAttribute('type', 'text')
+                } else {input.setAttribute('type', 'password')}
+            })
+        }
+        showPass()
 
         document.querySelector('.form').addEventListener('submit', function (event) {
             event.preventDefault()
