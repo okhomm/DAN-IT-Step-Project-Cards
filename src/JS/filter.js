@@ -61,9 +61,9 @@ const filtredStatusCardShow = (filterWord) => {
         if (el.status === filterWord) {
             emptyVisit.innerHTML = '';
             emptyVisit.remove();
-            el.doctor === "Стоматолог" ? new VisitDentist().render.call(el) : false
-            el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
-            el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
+            el.doctor === "Стоматолог" ? new Visit().createCard.call(el) : false
+            el.doctor === "Кардіолог" ? new Visit().createCard.call(el) : false
+            el.doctor === "Терапевт" ? new Visit().createCard.call(el) : false
 
             visitsCard.classList.remove('d-flex', 'justify-content-center', 'text-center');
         } else {
@@ -78,9 +78,9 @@ const filtredUrgencyCardShow = (filterWord) => {
         if (el.description.toLowerCase() === filterWord) {
             emptyVisit.innerHTML = '';
             emptyVisit.remove();
-            el.doctor === "Стоматолог" ? new VisitDentist().render.call(el) : false
-            el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
-            el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
+            el.doctor === "Стоматолог" ? new Visit().createCard.call(el) : false
+            el.doctor === "Кардіолог" ? new Visit().createCard.call(el) : false
+            el.doctor === "Терапевт" ? new Visit().createCard.call(el) : false
             visitsCard.classList.remove('d-flex', 'justify-content-center', 'text-center');
 
         } else {
@@ -111,9 +111,9 @@ const searchFilter = () => {
             el.notes.trim().toLowerCase().match(searchPhrase.value.trim().toLowerCase())) {
             emptyVisit.innerHTML = '';
             emptyVisit.remove();
-            el.doctor === "Стоматолог" ? new VisitDentist().render.call(el) : false
-            el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
-            el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
+            el.doctor === "Стоматолог" ? new Visit().createCard.call(el) : false
+            el.doctor === "Кардіолог" ? new Visit().createCard.call(el) : false
+            el.doctor === "Терапевт" ? new Visit().createCard.call(el) : false
             visitsCard.classList.remove('d-flex', 'justify-content-center', 'text-center');
         } else {
             visitsCard.append(emptyVisit);

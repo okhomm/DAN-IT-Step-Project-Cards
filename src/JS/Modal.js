@@ -202,6 +202,7 @@ export class Modal {
 
             const logoText = document.createElement('p')
             logoText.style.cssText = 'color: black; margin: 15px 0 0 0;'
+            logoText.id = "greetings-text"
             logoText.innerHTML =
                 ` <p class="creationText">Вітаємо, зайдіть в систему щоб побачити візити!</p>`
             logo.after(logoText)
