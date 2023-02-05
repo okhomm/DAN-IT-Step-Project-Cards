@@ -138,11 +138,10 @@ export class Modal {
                                 const warning = document.createElement('div')
                                 const loginTitle = document.body.querySelector('#loginTitle')
                                 warning.id = "warning"
-                                warning.style.cssText = 'font-weight: bold;'
 
                                 warning.innerHTML = `
                             <div>
-                                <h5 style="color: #800000">Помилка в логіні чи паролі</h5>
+                                <h5 style="color: #800000; font-weight: bold; font-size: 18px;">Помилка в логіні чи паролі</h5>
                             </div>
                              `
                                 loginTitle.after(warning)
