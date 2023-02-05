@@ -138,6 +138,7 @@ export class Modal {
                                 const warning = document.createElement('div')
                                 const loginTitle = document.body.querySelector('#loginTitle')
                                 warning.id = "warning"
+                                warning.style.cssText = 'font-weight: bold;'
 
                                 warning.innerHTML = `
                             <div>
