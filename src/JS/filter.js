@@ -1,75 +1,180 @@
+import {Modal} from "./Modal.js";
+import {Visit, VisitDentist, VisitCardiologist, VisitTherapist} from "./Visit.js";
+
+const CARDS_API = "https://ajax.test-danit.com/api/v2/cards";
+
+const visitsCard = document.querySelector('#visitsCard');
+const dashboardCards = document.querySelector('#dashboardCards');
+const emptyVisit = document.createElement('p');
+emptyVisit.id = 'dashboardText';
+emptyVisit.classList.add('pb-5', 'pt-5', 'display-6', 'text-secondary');
+emptyVisit.innerHTML = 'Немає візитів';
 
 
-const filter = document.querySelector('#filter');
+const getAllCards = async () => {
+    const response = await fetch(CARDS_API, {
+        method: 'GET',
+        headers: {'Authorization': `Bearer ${localStorage.getItem("token")}`}
+    });
+    const data = await response.json();
+    return data;
+};
 
-filter.addEventListener("click", (e) => {
-    e.preventDefault();
-    const form = e.target;
+const allCards = await getAllCards();
 
-    setTimeout(() => {
-        const cards = document.querySelectorAll('.col');
-        const statusElem = document.querySelector("#filterStatusButtons");
-        const searchPhrase = document.querySelector('#searchPhrase');
+const filterStatusButtonsStyle = (button1, button2) => {
 
-        // console.log(cards)
-        for(const card of cards) {
-            const cardPriority = card.querySelector('.Description').innerText.toLowerCase();
-            const cardStatus = card.querySelector('.Status').innerText.toLowerCase();
+    button1.disabled = false;
+    button1.classList.remove('btn-danger');
+    button1.classList.add('btn-outline-danger');
 
+    button2.classList.remove('btn-outline-danger');
+    button2.classList.add('btn-danger');
+    button2.disabled = true;
 
-            const cardDoctor = card.querySelector('#docName').innerText.toLowerCase();
-            const cardPacientName = card.querySelector('#userName').innerText.toLowerCase();
-            const cardTitle = card.querySelector('.Purpose').innerText.toLowerCase();
-            const cardDescription = card.querySelector('.Notes').innerText.toLowerCase();
+    visitsCard.innerHTML = '';
+    dashboardCards.classList.add('bg-light');
+    visitsCard.classList.add('d-flex', 'justify-content-center', 'text-center');
+}
 
-            if (
-                (!cardStatus || cardStatus.includes(e.target.textContent.toLowerCase()) && e.target.tagName.toLowerCase() === "button") ||
-                (!cardPriority || cardPriority.includes(e.target.textContent.toLowerCase()) && e.target.tagName.toLowerCase() === "button") ||
-                (!cardDoctor || cardDoctor.includes(searchPhrase.value.toLowerCase()) && e.target.tagName.toLowerCase() === "button")
-                // (!cardPacientName || cardPacientName.includes(searchPhrase.value.toLowerCase()) && e.target.tagName.toLowerCase() === "button") ||
-                // (!cardTitle || cardTitle.includes(searchPhrase.value.toLowerCase()) && e.target.tagName.toLowerCase() === "button") ||
-                // (!cardDescription || cardDescription.includes(searchPhrase.value.toLowerCase()) && e.target.tagName.toLowerCase() === "button")
+const filterUrgencyButtonsStyle = (button1, button2, button3) => {
 
-            ) {
-                card.style.display = "";
-            } else {
-                card.style.display = "none";
-                // const allFilterButtons = filter.querySelector('button');
-                // console.log(allFilterButtons)
+    button1.disabled = false;
+    button1.classList.remove('btn-danger');
+    button1.classList.add('btn-outline-danger');
 
+    button2.disabled = false;
+    button2.classList.remove('btn-danger');
+    button2.classList.add('btn-outline-danger');
 
-            }
+    button3.classList.remove('btn-outline-danger');
+    button3.classList.add('btn-danger');
+    button3.disabled = true;
 
+    visitsCard.innerHTML = '';
+    dashboardCards.classList.add('bg-light');
+    visitsCard.classList.add('d-flex', 'justify-content-center', 'text-center');
+}
 
+const filtredStatusCardShow = (filterWord) => {
+    allCards.forEach(el => {
+        if (el.status === filterWord) {
+            emptyVisit.innerHTML = '';
+            emptyVisit.remove();
+            el.doctor === "Стоматолог" ? new VisitDentist().render.call(el) : false
+            el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
+            el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
+
+            visitsCard.classList.remove('d-flex', 'justify-content-center', 'text-center');
+        } else {
+            visitsCard.append(emptyVisit);
         }
-    }, 300);
+    })
+};
 
+const filtredUrgencyCardShow = (filterWord) => {
+    allCards.forEach(el => {
 
-    // const inputElem = form.querySelector("#searchPhrase");
-    // const title = inputElem.value;
-    // console.log(inputElem.value)
+        if (el.description.toLowerCase() === filterWord) {
+            emptyVisit.innerHTML = '';
+            emptyVisit.remove();
+            el.doctor === "Стоматолог" ? new VisitDentist().render.call(el) : false
+            el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
+            el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
+            visitsCard.classList.remove('d-flex', 'justify-content-center', 'text-center');
 
+        } else {
+            visitsCard.append(emptyVisit);
+        }
+    })
+}
 
-    // const status = statusElem.innerHTML.toLowerCase();
+const searchFilter = () => {
+    visitsCard.innerHTML = '';
+    dashboardCards.classList.add('bg-light');
+    visitsCard.classList.add('d-flex', 'justify-content-center', 'text-center');
 
+    if (!searchPhrase.value) {
+        searchPhrase.classList.add('border', 'border-danger', 'text-danger');
+        searchPhrase.value = 'Помилка! Будь-ласка введіть фразу для пошуку';
 
+        searchPhrase.addEventListener('click', () => {
+            searchPhrase.value = '';
+            searchPhrase.classList.remove('border', 'border-danger', 'text-danger');
+        })
+    }
 
+    allCards.forEach(el => {
+        if (el.purpose.trim().toLowerCase().match(searchPhrase.value.trim().toLowerCase()) ||
+            el.name.trim().toLowerCase().match(searchPhrase.value.trim().toLowerCase()) ||
+            el.doctor.trim().toLowerCase().match(searchPhrase.value.trim().toLowerCase()) ||
+            el.notes.trim().toLowerCase().match(searchPhrase.value.trim().toLowerCase())) {
+            emptyVisit.innerHTML = '';
+            emptyVisit.remove();
+            el.doctor === "Стоматолог" ? new VisitDentist().render.call(el) : false
+            el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
+            el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
+            visitsCard.classList.remove('d-flex', 'justify-content-center', 'text-center');
+        } else {
+            visitsCard.append(emptyVisit);
+        }
+    })
+}
 
-    //
-    // const priorityElem = form.querySelector("#filterUrgencyButtons");
-    // const priority = priorityElem.value.toLowerCase();
+// ---------------------------------------------------------------------
+// Filter By Status
+// ---------------------------------------------------------------------
 
-    // console.log(title, status, priority);
-    // showFilteredCards(title, status, priority);
-
-
-});
-
-filter.addEventListener("submit", (e) => {
+const filterStatusButtons = document.querySelector('#filterStatusButtons');
+filterStatusButtons.addEventListener('click', async (e) => {
     e.preventDefault();
-});
-filter.addEventListener("click", (e) => {
+    const filterOpenBtn = document.querySelector("#filterOpenBtn");
+    const filterDoneBtn = document.querySelector("#filterDoneBtn");
+
+    if (e.target.id === "filterOpenBtn" && e.target.tagName.toLowerCase() === "button") {
+        filterStatusButtonsStyle(filterDoneBtn, filterOpenBtn);
+        filtredStatusCardShow('open');
+    }
+
+    if (e.target.id === "filterDoneBtn" && e.target.tagName.toLowerCase() === "button") {
+        filterStatusButtonsStyle(filterOpenBtn, filterDoneBtn);
+        filtredStatusCardShow('done');
+    }
+})
+
+// ---------------------------------------------------------------------
+// Filter By Urgency
+// ---------------------------------------------------------------------
+const filterUrgencyButtons = document.querySelector('#filterUrgencyButtons');
+
+filterUrgencyButtons.addEventListener('click', (e) => {
     e.preventDefault();
+    if (e.target.id === "filterHigh" && e.target.tagName.toLowerCase() === "button") {
+        filterUrgencyButtonsStyle(filterNormal, filterLow, filterHigh);
+        filtredUrgencyCardShow('high');
+    }
+
+    if (e.target.id === "filterNormal" && e.target.tagName.toLowerCase() === "button") {
+        filterUrgencyButtonsStyle(filterHigh, filterLow, filterNormal);
+        filtredUrgencyCardShow('normal');
+    }
+
+    if (e.target.id === "filterLow" && e.target.tagName.toLowerCase() === "button") {
+        filterUrgencyButtonsStyle(filterHigh, filterNormal, filterLow);
+        filtredUrgencyCardShow('low');
+    }
+})
+
+// ---------------------------------------------------------------------
+// Search Filter
+// ---------------------------------------------------------------------
+
+const filterSearchBtn = document.querySelector('#filterSearchBtn');
+const searchPhrase = document.querySelector('#searchPhrase');
+filterSearchBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    searchFilter();
+
 });
 
-// showFiltredCards()
+
