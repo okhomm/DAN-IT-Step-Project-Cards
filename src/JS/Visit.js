@@ -256,10 +256,10 @@ export class Visit {
                                         d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2ZM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96c.026-.163.04-.33.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1.006 1.006 0 0 1 1 12V4Z"/>
                                 </svg>
                                 <span id="userName" class="patient-name ms-1" style="overflow: auto">${this.name}</span>
-                                <div class="Purpose" style="visibility: hidden">${this.purpose}</div>
-                                <div class="Notes" style="visibility: hidden">${this.notes}</div>
-                                <div class="Description" style="visibility: hidden">${this.description}</div>
-                                <div class="Status" style="visibility: hidden">${this.status}</div>
+                                <div class="Purpose" style="display: none">${this.purpose}</div>
+                                <div class="Notes" style="display: none">${this.notes}</div>
+                                <div class="Description" style="display: none">${this.description}</div>
+                                <div class="Status" style="display: none">${this.status}</div>
                             </div>
                         </div>
                         <div class="card-footer bg-transparent d-flex justify-content-around align-items-center">

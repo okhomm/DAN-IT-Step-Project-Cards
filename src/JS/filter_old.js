@@ -1,8 +1,8 @@
 import {Modal} from "./Modal.js";
-import {Visit, VisitDentist, VisitCardiologist, VisitTherapist} from "./Visit.js";
+// import {Visit, VisitDentist, VisitCardiologist, VisitTherapist} from "./Visit.js";
 
 
-const CARDS_API = "https://ajax.test-danit.com/api/v2/cards";
+// const CARDS_API = "https://ajax.test-danit.com/api/v2/cards";
 
 const lowButton = document.querySelector('#filterLow');
 const visitsCard = document.querySelector('#visitsCard');
@@ -13,19 +13,13 @@ emptyVisit.classList.add('pb-5', 'pt-5', 'display-6', 'text-secondary');
 emptyVisit.innerHTML = 'Немає візитів';
 
 
-const getAllCards = async () => {
-    const response = await fetch(CARDS_API, {
-        method: 'GET',
-        headers: {'Authorization': `Bearer ${localStorage.getItem("token")}`}
-    });
-    const data = await response.json();
-    console.log(data);
-    return data;
-};
+const getAllCards = document.querySelectorAll('.col');
 
-const allCards = await getAllCards();
+// const allCards = await getAllCards();
 
 const filterStatusButtons = document.querySelector('#filterStatusButtons');
+const filter = document.querySelector('#filter');
+const cards = document.querySelectorAll('.col');
 
 filterStatusButtons.addEventListener('click', async (e) => {
     e.preventDefault();
@@ -46,48 +40,65 @@ filterStatusButtons.addEventListener('click', async (e) => {
         dashboardCards.classList.add('bg-light');
         visitsCard.classList.add('d-flex', 'justify-content-center', 'text-center');
 
-        allCards.forEach(el => {
+        for(const card of cards) {
+            const cardDoctor = card.querySelector('#docName').innerText.toLowerCase();
+            const cardPacientName = card.querySelector('#userName').innerText.toLowerCase();
+            const cardTitle = card.querySelector('.Purpose').innerText.toLowerCase();
+            const cardDescription = card.querySelector('.Notes').innerText.toLowerCase();
+            const cardStatus = card.querySelector('.Status').innerText.toLowerCase();
+            const cardPriority = card.querySelector('.Description').innerText.toLowerCase();
 
-            if (el.status === 'open') {
-                emptyVisit.innerHTML = '';
-                emptyVisit.remove();
-                el.doctor === "Стоматолог" ? new VisitDentist().render.call(el) : false
-                el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
-                el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
-
-                visitsCard.classList.remove('d-flex', 'justify-content-center', 'text-center');
+            if (cardStatus === 'open') {
+                card.style.display = "";
             } else {
-                visitsCard.append(emptyVisit);
+                card.style.display = "none";
             }
-        })
 
-    }
-    if (e.target.id === "filterDoneBtn" && e.target.tagName.toLowerCase() === "button") {
-        filterOpenBtn.disabled = false;
-        filterOpenBtn.classList.remove('btn-danger');
-        filterOpenBtn.classList.add('btn-outline-danger');
-        filterDoneBtn.classList.remove('btn-outline-danger');
-        filterDoneBtn.classList.add('btn-danger');
-        filterDoneBtn.disabled = true;
-
-        visitsCard.innerHTML = '';
-        dashboardCards.classList.add('bg-light');
-        visitsCard.classList.add('d-flex', 'justify-content-center', 'text-center');
-
-        allCards.forEach(el => {
-            if (el.status === 'done') {
-                emptyVisit.innerHTML = '';
-                emptyVisit.remove();
-                el.doctor === "Стоматолог" ? new VisitDentist().render.call(el) : false
-                el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
-                el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
-                visitsCard.classList.remove('d-flex', 'justify-content-center', 'text-center');
-            } else {
-                visitsCard.append(emptyVisit);
             }
-        })
-    }
-})
+        }
+
+        // allCards.forEach(el => {
+        //
+        //     if (el.status === 'open') {
+        //         emptyVisit.innerHTML = '';
+        //         emptyVisit.remove();
+        //         el.doctor === "Стоматолог" ? new VisitDentist().render.call(el) : false
+        //         el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
+        //         el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
+        //
+        //         visitsCard.classList.remove('d-flex', 'justify-content-center', 'text-center');
+        //     } else {
+        //         visitsCard.append(emptyVisit);
+        //     }
+        // })
+
+    })
+//     if (e.target.id === "filterDoneBtn" && e.target.tagName.toLowerCase() === "button") {
+//         filterOpenBtn.disabled = false;
+//         filterOpenBtn.classList.remove('btn-danger');
+//         filterOpenBtn.classList.add('btn-outline-danger');
+//         filterDoneBtn.classList.remove('btn-outline-danger');
+//         filterDoneBtn.classList.add('btn-danger');
+//         filterDoneBtn.disabled = true;
+//
+//         visitsCard.innerHTML = '';
+//         dashboardCards.classList.add('bg-light');
+//         visitsCard.classList.add('d-flex', 'justify-content-center', 'text-center');
+//
+//         allCards.forEach(el => {
+//             if (el.status === 'done') {
+//                 emptyVisit.innerHTML = '';
+//                 emptyVisit.remove();
+//                 el.doctor === "Стоматолог" ? new VisitDentist().render.call(el) : false
+//                 el.doctor === "Кардіолог" ? new VisitCardiologist().render.call(el) : false
+//                 el.doctor === "Терапевт" ? new VisitTherapist().render.call(el) : false
+//                 visitsCard.classList.remove('d-flex', 'justify-content-center', 'text-center');
+//             } else {
+//                 visitsCard.append(emptyVisit);
+//             }
+//         })
+//     }
+// })
 
 // ---------------------------------------------------------------------
 // Filter By Urgency
