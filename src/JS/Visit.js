@@ -1,5 +1,6 @@
 
 import {Modal} from "./Modal.js";
+import {filter} from "./filter.js";
 
 
 export class Visit {
@@ -92,6 +93,8 @@ export class Visit {
 
             new Visit().clear()
 
+            filter()
+
             const warning = document.createElement('div')
             const firstItem = document.body.querySelector('#newVisit')
             warning.id = "warning"
@@ -136,9 +139,8 @@ export class Visit {
                 if (localStorage.getItem("token")) {
                     data.forEach(el => {
                         new Visit().clear()
-                        el.doctor === "Стоматолог" ? new Visit().createCard.call(el) : false
-                        el.doctor === "Кардіолог" ? new Visit().createCard.call(el) : false
-                        el.doctor === "Терапевт" ? new Visit().createCard.call(el) : false
+                        new Visit().createCard.call(el)
+                        filter()
                     })
                 }
             })
@@ -259,6 +261,7 @@ export class Visit {
                 .then(data => {
                     data === "" ? doctorCard.remove() : false
                     new Visit().cardsOver ()
+                    filter()
                 })
         })
 
@@ -467,6 +470,7 @@ export class Visit {
                     if (data === "") {
                         document.getElementById(`${this.id}`).remove()
                         blur.remove()
+                        filter()
                     }
                     new Visit().cardsOver ()
                 })
@@ -635,6 +639,7 @@ export class Visit {
                             userEdit.inputUrgency.value === "High" ? color = "danger" : userEdit.inputUrgency.value === "Low" ? color = "primary" : color = "warning"
                             document.getElementById(`${this.id}`).querySelector("div").classList = `card border-${color} mb-3 h-100`
                             document.getElementById(`${this.id}`).querySelector("div").firstElementChild.classList = `card-header bg-${color} border-${color}`
+                            filter()
                         }
                     })
                 blur.remove()

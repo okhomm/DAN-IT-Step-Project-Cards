@@ -1,5 +1,5 @@
 import {Visit} from "./Visit.js";
-
+import {filter} from "./filter.js";
 
 
 export class Modal {
@@ -162,6 +162,8 @@ export class Modal {
     authorization () {
         document.querySelector('#greetings-text').remove()
         document.querySelector('#login-btn').remove()
+
+        filter()
 
         const element = document.createElement('div')
         const header = document.body.querySelector('#headerButton')
