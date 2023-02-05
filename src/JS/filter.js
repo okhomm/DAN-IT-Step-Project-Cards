@@ -33,7 +33,6 @@ const filterStatusButtonsStyle = (button1, button2) => {
     button2.disabled = true;
 
     visitsCard.innerHTML = '';
-    dashboardCards.classList.add('bg-light');
     visitsCard.classList.add('d-flex', 'justify-content-center', 'text-center');
 }
 
@@ -52,7 +51,6 @@ const filterUrgencyButtonsStyle = (button1, button2, button3) => {
     button3.disabled = true;
 
     visitsCard.innerHTML = '';
-    dashboardCards.classList.add('bg-light');
     visitsCard.classList.add('d-flex', 'justify-content-center', 'text-center');
 }
 
@@ -91,7 +89,6 @@ const filtredUrgencyCardShow = (filterWord) => {
 
 const searchFilter = () => {
     visitsCard.innerHTML = '';
-    dashboardCards.classList.add('bg-light');
     visitsCard.classList.add('d-flex', 'justify-content-center', 'text-center');
 
     if (!searchPhrase.value) {
@@ -174,7 +171,6 @@ const searchPhrase = document.querySelector('#searchPhrase');
 filterSearchBtn.addEventListener('click', (e) => {
     e.preventDefault();
     searchFilter();
-
 });
 
 
