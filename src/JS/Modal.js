@@ -141,7 +141,7 @@ export class Modal {
 
                                 warning.innerHTML = `
                             <div>
-                                <h5 style="color: #800000">Помилка в логіні чи паролі</h5>
+                                <h5 style="color: #800000; font-weight: bold; font-size: 18px;">Помилка в логіні чи паролі</h5>
                             </div>
                              `
                                 loginTitle.after(warning)
@@ -159,28 +159,23 @@ export class Modal {
 
     }
     authorization () {
-        document.querySelector('.greetings').remove()
+        document.querySelector('#greetings-text').remove()
         document.querySelector('#login-btn').remove()
 
         const element = document.createElement('div')
         const header = document.body.querySelector('#headerButton')
+
+        const text = document.createElement('p')
+        const logo = document.querySelector('.logo')
+        text.style.cssText = 'color: black; margin: 15px 0 0 0;'
+        text.innerHTML = ` <p class="text">Вітаємо, ви успішно авторизувалися !</p> `
+        logo.after(text)
 
         element.innerHTML = `
             <button id="add-visit-btn" class="btn btn-outline-danger me-2" type="button">Новий візит</button>
             <button id="logout-btn" class="btn btn-danger" type="button">Вийти</button>
         `
         header.append(element)
-
-        const text = document.createElement('p')
-        const logo = document.querySelector('.logo')
-        text.id = 'text'
-        text.style.cssText = 'color: black; margin-top: 40px;'
-        text.innerHTML = `
-           <div>
-             <p class="text">Вітаємо, ви успішно авторизувалися !</p>
-            </div>
-            `
-        logo.after(text)
 
         new Visit().listAllCards()
 
@@ -190,11 +185,16 @@ export class Modal {
             await localStorage.clear()
             element.remove()
             text.remove()
-            element.innerHTML = `
-            <button id="login-btn" class="btn btn-danger" type="button">Увійти</button>
-        `
-            header.append(element)
 
+            const logoText = document.createElement('p')
+            logoText.style.cssText = 'color: black; margin: 15px 0 0 0;'
+            logoText.innerHTML =
+                ` <p class="creationText">Вітаємо, зайдіть в систему щоб побачити візити!</p>`
+            logo.after(logoText)
+
+            element.innerHTML =
+                ` <button id="login-btn" class="btn btn-danger" type="button">Увійти</button> `
+            header.append(element)
 
             new Visit().emptyVillage()
 
