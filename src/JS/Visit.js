@@ -93,8 +93,6 @@ export class Visit {
 
             new Visit().clear()
 
-            filter()
-
             const warning = document.createElement('div')
             const firstItem = document.body.querySelector('#newVisit')
             warning.id = "warning"
@@ -193,6 +191,7 @@ export class Visit {
     }
 
     createCard (obj) {
+        filter()
         const doctorCard = document.createElement('div')
         const element = document.body.querySelector('#visitsCard')
         doctorCard.classList = "col"
