@@ -1,6 +1,9 @@
 # DAN-IT-Step-Project-Cards
 
-# About our team
+## Create test account link
+https://ajax.test-danit.com/front-pages/cards-register.html
+
+## About our team
 
 
 Novosolov Oleksandr
@@ -24,7 +27,10 @@ Filter all cards
 Filter by status, filter by urgency, search filter
 ```
 
-# Links to project
+## Links to project
+https://legmann.github.io/DAN-IT-Step-Project-Cards/ <br>
 https://github.com/legmann/DAN-IT-Step-Project-Cards
+
+
 
 
