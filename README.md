@@ -1,5 +1,8 @@
 # DAN-IT-Step-Project-Cards
 
+login: test_user@gmail.com
+passowrd: 12345678
+
 ## Create test account link
 https://ajax.test-danit.com/front-pages/cards-register.html
 
